@@ -2,11 +2,12 @@ package com.example.speechtutor;
  
 import java.util.HashMap;
 import java.util.List;
- 
+
 import android.content.Context;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
@@ -50,6 +51,27 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
  
         TextView txtListChild = (TextView) convertView
                 .findViewById(R.id.recordingPlayback);
+        
+        TextView delete = (TextView) convertView
+                .findViewById(R.id.delete);
+        
+        TextView playback = (TextView) convertView
+                .findViewById(R.id.playback);
+        delete.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                System.out.println("Delete clicked");
+            }
+        });
+        
+        playback.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+            	 System.out.println("Playback clicked");
+            }
+        });
  
         txtListChild.setText(childText);
         return convertView;

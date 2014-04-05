@@ -48,24 +48,7 @@ public class Playback extends Activity {
 	    ExpandableListAdapter adapter= new ExpandableListAdapter(this, listDataHeader, listDataChild);
 	    
 	    recordings.setAdapter(adapter);
-	 // Listview on child click listener
-        recordings.setOnChildClickListener(new OnChildClickListener() {
- 
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v,
-                    int groupPosition, int childPosition, long id) {
-                Toast.makeText(
-                        getApplicationContext(),
-                        listDataHeader.get(groupPosition)
-                                + " : "
-                                + listDataChild.get(
-                                        listDataHeader.get(groupPosition)).get(
-                                        childPosition), Toast.LENGTH_SHORT)
-                        .show();
-                return false;
-            }
-        });
-	    
+	 
 	    /*recordings.setAdapter(new ArrayAdapter<String>(this,
 	        android.R.layout.simple_list_item_1, FilesInFolder));*/
 
@@ -122,7 +105,7 @@ public class Playback extends Activity {
 	        for (int i=0; i<files.length; i++) {
 	            MyFiles.add(files[i].getName());
 	        	List<String> accordion = new ArrayList<String>();
-	        	accordion.add("Delete");
+	        	accordion.add(" ");
 	        	listDataChild.put(files[i].getName(),accordion);
 	        }
 	    }
