@@ -40,6 +40,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:onClick="navigate"
             android:text="@string/nav_statistics" /> 
 
         <Button 
@@ -48,6 +49,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:onClick="navigate"
             android:text="@string/nav_record" />
 
         <Button 
@@ -56,6 +58,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:onClick="navigate"
             android:text="@string/nav_playback" />
 
         <Button 
@@ -64,6 +67,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:onClick="navigate"
             android:text="@string/nav_settings" />
         
     </LinearLayout>
