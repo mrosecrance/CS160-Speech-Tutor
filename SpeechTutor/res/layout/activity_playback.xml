@@ -9,7 +9,7 @@
     android:background="#00a0b0"
     tools:context=".Playback" >
     
-    <ListView 
+    <ExpandableListView 
     android:id="@+id/recordingsList"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" /> 
