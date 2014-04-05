@@ -172,5 +172,19 @@ public class Record extends Activity {
 	            return super.onOptionsItemSelected(item);
 	    }
 	}
+	
+	public void navigate(View view) {
+		Class classToStart = null;
+		switch(view.getId()) {
+		case R.id.nav_playback: 
+			classToStart = Playback.class;
+			break;
+		case R.id.nav_record:
+			classToStart = Record.class;
+			break;
+		}
+		Intent intent = new Intent(this, classToStart);
+		startActivity(intent);
+	}
 
 }
