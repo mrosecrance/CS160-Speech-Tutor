@@ -87,6 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:onClick="cancelRecording"
             android:text="@string/cancel_recording" /> 
 
         <Button 
@@ -95,6 +96,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:onClick="saveRecording"
             android:text="@string/save_recording" />
     </RelativeLayout>
 
