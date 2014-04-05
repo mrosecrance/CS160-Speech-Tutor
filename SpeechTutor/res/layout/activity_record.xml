@@ -28,11 +28,52 @@
         android:textOn="Stop" />
     
     <RelativeLayout 
-        android:id="@+id/finish_recording_menu"
+        android:id="@+id/nav_menu"
         android:layout_alignParentBottom="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="?android:attr/buttonBarStyle" >
+        
+        <Button 
+            android:id="@+id/nav_statistics"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="@string/nav_statistics" /> 
 
+        <Button 
+            android:id="@+id/nav_record"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/nav_statistics"
+            android:text="@string/nav_record" />
+
+        <Button 
+            android:id="@+id/nav_playback"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/nav_record"
+            android:text="@string/nav_playback" />
+
+        <Button 
+            android:id="@+id/nav_settings"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:text="@string/nav_settings" />
+        
+    </RelativeLayout>
+
+    
+    <RelativeLayout 
+        android:id="@+id/finish_recording_menu"
+        android:layout_alignTop="@+id/nav_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         style="?android:attr/buttonBarStyle" >
         
         <Button 
@@ -50,7 +91,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:text="@string/save_recording" />
-        
     </RelativeLayout>
 
 </RelativeLayout>
