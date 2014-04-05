@@ -28,6 +28,7 @@
         android:textOn="Stop" />
     
     <RelativeLayout 
+        android:id="@+id/finish_recording_menu"
         android:layout_alignParentBottom="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -43,12 +44,12 @@
             android:text="@string/cancel_recording" /> 
 
         <Button 
-            android:id="@+id/finish_recording"
+            android:id="@+id/save_recording"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:text="@string/finish_recording" />
+            android:text="@string/save_recording" />
         
     </RelativeLayout>
 
