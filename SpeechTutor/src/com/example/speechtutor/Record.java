@@ -18,8 +18,11 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Chronometer;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -33,6 +36,8 @@ public class Record extends Activity {
 	Thread recordingThread;
 	String filePath;
 	Chronometer chronometer = null;
+	LinearLayout navBar = null;
+	RelativeLayout finishRecordingBar = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +51,8 @@ public class Record extends Activity {
 	    buffer = new byte[bufferSize]; 
 		
 	    chronometer = (Chronometer) findViewById(R.id.chronometer);
+	    navBar = (LinearLayout) findViewById(R.id.nav_bar);
+	    finishRecordingBar = (RelativeLayout) findViewById(R.id.finish_recording_bar);
 		
 	    //Set up Record Button
 		record = (ToggleButton) findViewById(R.id.record);
@@ -59,6 +66,8 @@ public class Record extends Activity {
 		        	recorder.startRecording();
 		        	isRecording = true;
 		        	chronometer.setBase(SystemClock.elapsedRealtime());
+		        	navBar.setVisibility(View.GONE);
+		        	finishRecordingBar.setVisibility(View.VISIBLE);
 		        	chronometer.start();
 		            recordingThread = new Thread(new Runnable() {
 		                public void run() {
@@ -72,6 +81,8 @@ public class Record extends Activity {
 		        	 if (null != recorder) {
 		        	        isRecording = false;
 		        	        chronometer.stop();
+                            navBar.setVisibility(View.VISIBLE);
+                            finishRecordingBar.setVisibility(View.GONE);
 		        	        recorder.stop();
 		        	        recorder.release();
 		        	        recorder = null;
