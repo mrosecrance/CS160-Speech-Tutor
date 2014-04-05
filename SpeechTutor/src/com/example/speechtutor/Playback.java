@@ -35,13 +35,9 @@ public class Playback extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_playback);
-		
 		final ExpandableListView recordings;
-		//final ListView recordings;
 		recordings = (ExpandableListView)findViewById(R.id.recordingsList);
 	    ArrayList<String> FilesInFolder = GetFiles("/sdcard/SpeechTutor");
-	    //recordings = (ExpandableListView)findViewById(R.id.recordingsList);
-	    
 	    listDataHeader = FilesInFolder;
 	    
 	    
@@ -57,7 +53,7 @@ public class Playback extends Activity {
 	    	String fileName=(String)(recordings.getItemAtPosition(position));
 	        File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "SpeechTutor");
 	        fileName= mediaStorageDir.getPath() + File.separator + fileName;
-	    	File file=  new File(Environment.getExternalStorageDirectory(),fileName);
+	    	File file=  new File(fileName);
 	    	int musicLength = (int)(file.length()/2);
 	          short[] music = new short[musicLength];
 		        Toast.makeText(getApplicationContext(), "Playing sound from "+ fileName, Toast.LENGTH_SHORT).show();
@@ -131,6 +127,22 @@ public class Playback extends Activity {
 	        default:
 	            return super.onOptionsItemSelected(item);
 	    }
+	}	
+
+	public void navigate(View view) {
+		Class classToStart = null;
+		switch(view.getId()) {
+		case R.id.nav_playback: 
+			classToStart = Playback.class;
+			break;
+		case R.id.nav_record:
+			classToStart = Record.class;
+			break;
+		}
+		Intent intent = new Intent(this, classToStart);
+		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+		startActivity(intent);
 	}
+
 
 }
