@@ -14,6 +14,7 @@ import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -56,6 +57,7 @@ public class Record extends Activity {
 		  	              AudioFormat.ENCODING_PCM_16BIT, 2048);
 		        	recorder.startRecording();
 		        	isRecording = true;
+		        	chronometer.setBase(SystemClock.elapsedRealtime());
 		        	chronometer.start();
 		            recordingThread = new Thread(new Runnable() {
 		                public void run() {
