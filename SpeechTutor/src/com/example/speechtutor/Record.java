@@ -57,6 +57,7 @@ public class Record extends Activity {
 		        	recorder = new AudioRecord(MediaRecorder.AudioSource.MIC, SAMPLE_RATE, AudioFormat.CHANNEL_IN_MONO,
 		  	              AudioFormat.ENCODING_PCM_16BIT, AudioRecord.getMinBufferSize(SAMPLE_RATE, AudioFormat.CHANNEL_IN_MONO,
 		  	    				AudioFormat.ENCODING_PCM_16BIT)); 	
+
 		        	recorder.startRecording();
 		        	isRecording = true;
 		        	chronometer.setBase(SystemClock.elapsedRealtime());
@@ -98,9 +99,9 @@ public class Record extends Activity {
             }
         }
 		
-		filePath=new SimpleDateFormat("yyyy-MM-dd hh-mm-ss'.pcm'").format(new Date());
-		filePath= mediaStorageDir.getPath() + File.separator +   "PCM_"+filePath;
-		//String filePath = "/sdcard/voice8K16bitmono.pcm";
+		filePath=new SimpleDateFormat("yyyy-MM-dd hh-mm-ss'.wav'").format(new Date());
+		filePath= mediaStorageDir.getPath() + File.separator +   "WAV_"+filePath;
+		//String filePath = "/sdcard/voice8K16bitmono.";
 	    short sData[] = new short[1024];
 
 	    FileOutputStream os = null;
