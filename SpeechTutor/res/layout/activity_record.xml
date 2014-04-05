@@ -26,5 +26,25 @@
         android:background="@drawable/recbuttonxml"
         android:textOff="Record"
         android:textOn="Stop" />
+    
+    <LinearLayout 
+        android:layout_alignParentBottom="true"
+        style="?android:attr/buttonBarStyle" >
+        
+        <Button 
+            android:id="@+id/cancel_recording"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel_recording" /> 
+
+        <Button 
+            android:id="@+id/finish_recording"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/finish_recording" />
+        
+    </LinearLayout>
 
 </RelativeLayout>
