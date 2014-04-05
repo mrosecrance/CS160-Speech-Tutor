@@ -38,55 +38,21 @@ public class Playback extends Activity {
 		final ExpandableListView recordings;
 		recordings = (ExpandableListView)findViewById(R.id.recordingsList);
 	    ArrayList<String> FilesInFolder = GetFiles("/sdcard/SpeechTutor");
-	    listDataHeader = FilesInFolder;
-	    
-	    
-	    ExpandableListAdapter adapter= new ExpandableListAdapter(this, listDataHeader, listDataChild);
-	    
-	    recordings.setAdapter(adapter);
-	 
-	    /*recordings.setAdapter(new ArrayAdapter<String>(this,
-	        android.R.layout.simple_list_item_1, FilesInFolder));*/
-
-	    recordings.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-	    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-	    	String fileName=(String)(recordings.getItemAtPosition(position));
-	        File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "SpeechTutor");
-	        fileName= mediaStorageDir.getPath() + File.separator + fileName;
-	    	File file=  new File(fileName);
-	    	int musicLength = (int)(file.length()/2);
-	          short[] music = new short[musicLength];
-		        Toast.makeText(getApplicationContext(), "Playing sound from "+ fileName, Toast.LENGTH_SHORT).show();
-	          try {
-	            InputStream is = new FileInputStream(file);
-	            BufferedInputStream bis = new BufferedInputStream(is);
-	            DataInputStream dis = new DataInputStream(bis);
-	            int i = 0;
-	            while (dis.available() > 0) {
-	              music[i] = dis.readShort();
-	              i++;
-	            }
-	            dis.close();     
-
-	            AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, 
-	                                                   8000, 
-	                                                   AudioFormat.CHANNEL_IN_MONO,
-	                                                   AudioFormat.ENCODING_PCM_16BIT, 
-	                                                   musicLength, 
-	                                                   AudioTrack.MODE_STREAM);
-
-	            audioTrack.play();
-	            audioTrack.write(music, 0, musicLength);
-
-	         } catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+	    if(FilesInFolder == null){
+	    	FilesInFolder = new ArrayList<String>();
 	    }
-	    });
+	    recordings.setEmptyView(findViewById(R.id.empty));
+		listDataHeader = FilesInFolder;
+		
+		    
+		ExpandableListAdapter adapter= new ExpandableListAdapter(this, listDataHeader, listDataChild);
+		    
+		recordings.setAdapter(adapter);
+		 
+		    /*recordings.setAdapter(new ArrayAdapter<String>(this,
+		        android.R.layout.simple_list_item_1, FilesInFolder));*/
+
+	    
 	}
 	
 	public ArrayList<String> GetFiles(String DirectoryPath) {
