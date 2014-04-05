@@ -10,9 +10,10 @@
     tools:context=".Record" >
     
     <Chronometer 
+        android:id="@+id/chronometer"
         android:layout_width = "wrap_content"
         android:layout_height = "wrap_content"
-        android:layout_above="@+id/button1"
+        android:layout_above="@+id/record"
         android:layout_centerHorizontal="true"/>
 
     <ToggleButton
