@@ -23,14 +23,15 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:background="@drawable/recbuttonxml"
+        android:background="@drawable/rec_button"
         android:textOff="Record"
         android:textOn="Stop" />
     
-    <LinearLayout 
+    <RelativeLayout 
         android:layout_alignParentBottom="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
         style="?android:attr/buttonBarStyle" >
         
         <Button 
@@ -38,6 +39,7 @@
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
             android:text="@string/cancel_recording" /> 
 
         <Button 
@@ -45,8 +47,9 @@
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:text="@string/finish_recording" />
         
-    </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>
