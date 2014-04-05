@@ -6,6 +6,10 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_playback">Playback</string>
     <string name="cancel_recording">Cancel</string>
-    <string name="finish_recording">Finish</string>
+    <string name="save_recording">Save</string>
+    <string name="nav_statistics">Stats</string>
+    <string name="nav_record">Record</string>
+    <string name="nav_playback">Listen</string>
+    <string name="nav_settings">Settings</string>
 
 </resources>
