@@ -13,7 +13,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.media.AudioFormat;
 import android.media.AudioManager;
+import android.media.AudioRecord;
 import android.media.AudioTrack;
+import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,36 +45,27 @@ public class Playback extends Activity {
 	    	File file=  new File(fileName);
 	    	int musicLength = (int)(file.length()/2);
 	          short[] music = new short[musicLength];
-
-
 	          try {
-	            // Create a DataInputStream to read the audio data back from the saved file.
 	            InputStream is = new FileInputStream(file);
 	            BufferedInputStream bis = new BufferedInputStream(is);
 	            DataInputStream dis = new DataInputStream(bis);
-
-	            // Read the file into the music array.
 	            int i = 0;
 	            while (dis.available() > 0) {
 	              music[i] = dis.readShort();
 	              i++;
 	            }
 	            dis.close();     
+	            Toast.makeText(getApplicationContext(), "Playing sound from "+ fileName, Toast.LENGTH_SHORT).show();
 
-
-	            // Create a new AudioTrack object using the same parameters as the AudioRecord
-	            // object used to create the file.
 	            AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, 
 	                                                   8000, 
-	                                                   AudioFormat.CHANNEL_CONFIGURATION_MONO,
+	                                                   AudioFormat.CHANNEL_IN_MONO,
 	                                                   AudioFormat.ENCODING_PCM_16BIT, 
 	                                                   musicLength, 
 	                                                   AudioTrack.MODE_STREAM);
-	            
-	            audioTrack.play();
 
+	            audioTrack.play();
 	            audioTrack.write(music, 0, musicLength);
-            Toast.makeText(getApplicationContext(), "Playing sound from "+ fileName, Toast.LENGTH_SHORT).show();
 
 	         } catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
@@ -80,10 +73,7 @@ public class Playback extends Activity {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}finally{
-	             Toast.makeText(getApplicationContext(), "Sorry can't play "+ fileName, Toast.LENGTH_SHORT).show();
-
-	         }
+			}
 	    }
 	    });
 	}
