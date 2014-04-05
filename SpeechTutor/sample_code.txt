@@ -1,0 +1,8 @@
+Log.i("Permission", Boolean.toString(checkAudioExternalPermission()));
+
+private boolean checkAudioExternalPermission()
+{
+    String permission = "android.permission.AUDIO_RECORD";
+    int res = getBaseContext().checkCallingOrSelfPermission(permission);
+    return (res == PackageManager.PERMISSION_GRANTED);            
+}
