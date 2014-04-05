@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_alignParentBottom="true"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    style="?android:attr/buttonBarStyle" >
+    
+    <Button 
+        android:id="@+id/nav_statistics"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:onClick="navigate"
+        android:text="@string/nav_statistics" /> 
+
+    <Button 
+        android:id="@+id/nav_record"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:onClick="navigate"
+        android:text="@string/nav_record" />
+
+    <Button 
+        android:id="@+id/nav_playback"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:onClick="navigate"
+        android:text="@string/nav_playback" />
+
+    <Button 
+        android:id="@+id/nav_settings"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:onClick="navigate"
+        android:text="@string/nav_settings" />
+    
+</LinearLayout>
