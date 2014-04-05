@@ -15,22 +15,25 @@ import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Chronometer;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 public class Record extends Activity {
 	ToggleButton record;
-	AudioRecord recorder= null;;
+	AudioRecord recorder= null;
 	static final int SAMPLE_RATE = 8000;
 	int bufferSize;
 	byte[] buffer;
 	boolean isRecording=false;
 	Thread recordingThread;
 	String filePath;
+	Chronometer chronometer = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,7 @@ public class Record extends Activity {
 	     
 	    buffer = new byte[bufferSize]; 
 		
+	    chronometer = (Chronometer) findViewById(R.id.chronometer);
 		
 	    //Set up Record Button
 		record = (ToggleButton) findViewById(R.id.record);
@@ -58,6 +62,8 @@ public class Record extends Activity {
 		            System.out.println (res == PackageManager.PERMISSION_GRANTED);  
 		        	recorder.startRecording();
 		        	isRecording = true;
+		        	chronometer.setBase(SystemClock.elapsedRealtime());
+		        	chronometer.start();
 		            recordingThread = new Thread(new Runnable() {
 		                public void run() {
 		                    saveAudioDataToFile();
@@ -69,6 +75,7 @@ public class Record extends Activity {
 		        }else{ //stop
 		        	 if (null != recorder) {
 		        	        isRecording = false;
+		        	        chronometer.stop();
 		        	        recorder.stop();
 		        	        recorder.release();
 		        	        recorder = null;
