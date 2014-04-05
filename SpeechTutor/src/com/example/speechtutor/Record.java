@@ -114,7 +114,7 @@ public class Record extends Activity {
 	        // gets the voice output from microphone to byte format
 
 	        recorder.read(sData, 0, 1024);
-	        System.out.println("Short wirting to file" + sData.toString());
+	        System.out.println("Short writing to file" + sData.toString());
 	        try {
 	            // // writes the data to file from buffer
 	            // // stores the voice buffer
