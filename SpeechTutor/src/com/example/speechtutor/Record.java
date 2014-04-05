@@ -1,5 +1,6 @@
 package com.example.speechtutor;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -10,8 +11,10 @@ import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Environment;
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -75,7 +78,20 @@ public class Record extends Activity {
 		});
 	}
 	private void saveAudioDataToFile() {
-		filePath=new SimpleDateFormat("'/sdcard/speechtutor/'yyyy-MM-dd hh-mm-ss'.pcm'").format(new Date());
+
+        File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "SpeechTutor");
+        if (! mediaStorageDir.exists()){
+            if (! mediaStorageDir.mkdirs()){
+                Log.d("SpeechTutor", "failed to create directory");
+                return;
+            }
+            else{
+            	Log.i("SpeechTutor", "created speech directory");
+            }
+        }
+		
+		filePath=new SimpleDateFormat("yyyy-MM-dd hh-mm-ss'.pcm'").format(new Date());
+		filePath= mediaStorageDir.getPath() + File.separator +   "PCM_"+filePath;
 		//String filePath = "/sdcard/voice8K16bitmono.pcm";
 	    short sData[] = new short[1024];
 
