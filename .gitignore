@@ -55,3 +55,4 @@ proguard/
 
 #Eclipse junk
 .metadata/
+.settings/
