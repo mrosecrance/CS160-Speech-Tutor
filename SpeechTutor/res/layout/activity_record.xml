@@ -27,46 +27,46 @@
         android:textOff="Record"
         android:textOn="Stop" />
     
-    <RelativeLayout 
+    <LinearLayout 
         android:id="@+id/nav_menu"
         android:layout_alignParentBottom="true"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         style="?android:attr/buttonBarStyle" >
         
         <Button 
             android:id="@+id/nav_statistics"
             style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_weight="1"
             android:text="@string/nav_statistics" /> 
 
         <Button 
             android:id="@+id/nav_record"
             style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/nav_statistics"
+            android:layout_weight="1"
             android:text="@string/nav_record" />
 
         <Button 
             android:id="@+id/nav_playback"
             style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/nav_record"
+            android:layout_weight="1"
             android:text="@string/nav_playback" />
 
         <Button 
             android:id="@+id/nav_settings"
             style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_weight="1"
             android:text="@string/nav_settings" />
         
-    </RelativeLayout>
+    </LinearLayout>
 
     
     <RelativeLayout 
@@ -74,6 +74,7 @@
         android:layout_above="@+id/nav_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         style="?android:attr/buttonBarStyle" >
         
         <Button 
