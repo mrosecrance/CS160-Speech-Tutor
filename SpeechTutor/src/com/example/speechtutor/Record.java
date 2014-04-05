@@ -33,6 +33,7 @@ public class Record extends Activity {
 	int bufferSize;
 	byte[] buffer;
 	boolean isRecording=false;
+	boolean recordingInProgress=false;
 	Thread recordingThread;
 	String filePath;
 	Chronometer chronometer = null;
@@ -65,7 +66,10 @@ public class Record extends Activity {
 		  	    				AudioFormat.ENCODING_PCM_16BIT)); 	
 		        	recorder.startRecording();
 		        	isRecording = true;
-		        	chronometer.setBase(SystemClock.elapsedRealtime());
+		        	if(!recordingInProgress) {
+		        		chronometer.setBase(SystemClock.elapsedRealtime());
+		        	}
+		        	recordingInProgress=true;
 		        	navBar.setVisibility(View.GONE);
 		        	finishRecordingBar.setVisibility(View.VISIBLE);
 		        	chronometer.start();
@@ -81,14 +85,10 @@ public class Record extends Activity {
 		        	 if (null != recorder) {
 		        	        isRecording = false;
 		        	        chronometer.stop();
-                            navBar.setVisibility(View.VISIBLE);
-                            finishRecordingBar.setVisibility(View.GONE);
 		        	        recorder.stop();
 		        	        recorder.release();
 		        	        recorder = null;
 		        	        recordingThread = null;
-		        	        Toast.makeText(getApplicationContext(), "Audio Saved to "+ filePath,
-		        	        		   Toast.LENGTH_SHORT).show();
 		        	    }
 		        	
 		        }
@@ -130,6 +130,7 @@ public class Record extends Activity {
 	            // // stores the voice buffer
 	            byte bData[] = short2byte(sData);
 	            os.write(bData, 0, 2048);
+	            Log.d("Record", "Audio data actually saved");
 	        } catch (IOException e) {
 	            e.printStackTrace();
 	        }
@@ -185,6 +186,24 @@ public class Record extends Activity {
 		}
 		Intent intent = new Intent(this, classToStart);
 		startActivity(intent);
+	}
+	
+	public void cancelRecording(View view) {
+        navBar.setVisibility(View.VISIBLE);
+        finishRecordingBar.setVisibility(View.GONE);
+        recordingInProgress=false;
+        chronometer.setBase(SystemClock.elapsedRealtime());
+        chronometer.start();
+        chronometer.stop();
+	}
+	
+	public void saveRecording(View view) {
+		saveAudioDataToFile();
+        navBar.setVisibility(View.VISIBLE);
+        finishRecordingBar.setVisibility(View.GONE);
+        recordingInProgress=false;
+        Toast.makeText(getApplicationContext(), "Audio Saved to "+ filePath,
+                   Toast.LENGTH_SHORT).show();
 	}
 
 }
