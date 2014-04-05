@@ -195,6 +195,9 @@ public class Record extends Activity {
         chronometer.setBase(SystemClock.elapsedRealtime());
         chronometer.start();
         chronometer.stop();
+        File recording = new File(filePath);
+        recording.delete();
+        Log.d("Record", "Deleted recording exists: "+recording.exists());
 	}
 	
 	public void saveRecording(View view) {
