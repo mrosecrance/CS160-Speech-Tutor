@@ -56,10 +56,7 @@ public class Record extends Activity {
 		        if(isChecked){ //record
 		        	recorder = new AudioRecord(MediaRecorder.AudioSource.MIC, SAMPLE_RATE, AudioFormat.CHANNEL_IN_MONO,
 		  	              AudioFormat.ENCODING_PCM_16BIT, AudioRecord.getMinBufferSize(SAMPLE_RATE, AudioFormat.CHANNEL_IN_MONO,
-		  	    				AudioFormat.ENCODING_PCM_16BIT)/2);
-		        	String permission = "android.permission.AUDIO_RECORD";
-		            int res = getBaseContext().checkCallingOrSelfPermission(permission);
-		            System.out.println (res == PackageManager.PERMISSION_GRANTED);  
+		  	    				AudioFormat.ENCODING_PCM_16BIT)); 	
 		        	recorder.startRecording();
 		        	isRecording = true;
 		        	chronometer.setBase(SystemClock.elapsedRealtime());
