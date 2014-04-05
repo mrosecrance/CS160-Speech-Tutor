@@ -8,6 +8,12 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="#00a0b0"
     tools:context=".Record" >
+    
+    <Chronometer 
+        android:layout_width = "wrap_content"
+        android:layout_height = "wrap_content"
+        android:layout_above="@+id/button1"
+        android:layout_centerHorizontal="true"/>
 
     <ToggleButton
         android:id="@+id/record"
