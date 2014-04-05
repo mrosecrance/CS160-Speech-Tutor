@@ -1,41 +1,29 @@
 package com.example.speechtutor;
 
-import java.io.BufferedInputStream;
-import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.media.AudioFormat;
-import android.media.AudioManager;
-import android.media.AudioTrack;
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ExpandableListView;
-import android.widget.ExpandableListView.OnChildClickListener;
-import android.widget.Toast;
+import android.widget.ExpandableListView.OnGroupExpandListener;
 
 public class Playback extends Activity {
 	
 	List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild = new HashMap<String, List<String>>();
+    ExpandableListView recordings;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_playback);
-		final ExpandableListView recordings;
 		recordings = (ExpandableListView)findViewById(R.id.recordingsList);
 	    ArrayList<String> FilesInFolder = GetFiles("/sdcard/SpeechTutor");
 	    if(FilesInFolder == null){
@@ -45,13 +33,21 @@ public class Playback extends Activity {
 		listDataHeader = FilesInFolder;
 		
 		    
-		ExpandableListAdapter adapter= new ExpandableListAdapter(this, listDataHeader, listDataChild);
+		ExpandableListAdapter adapter= new ExpandableListAdapter(this, listDataHeader, listDataChild, recordings);
 		    
 		recordings.setAdapter(adapter);
-		 
-		    /*recordings.setAdapter(new ArrayAdapter<String>(this,
-		        android.R.layout.simple_list_item_1, FilesInFolder));*/
+		
+		recordings.setOnGroupExpandListener(new OnGroupExpandListener() {
+		    int previousItem = -1;
 
+		    @Override
+		    public void onGroupExpand(int groupPosition) {
+		        if(groupPosition != previousItem )
+		            recordings.collapseGroup(previousItem );
+		        previousItem = groupPosition;
+		    }
+		});
+		 
 	    
 	}
 	

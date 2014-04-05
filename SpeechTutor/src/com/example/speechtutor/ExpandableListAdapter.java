@@ -20,8 +20,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
  
@@ -31,14 +31,23 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<String>> _listDataChild;
- 
+    private ExpandableListView view;
+    
     public ExpandableListAdapter(Context context, List<String> listDataHeader,
             HashMap<String, List<String>> listChildData) {
         this._context = context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
     }
- 
+    
+    public ExpandableListAdapter(Context context, List<String> listDataHeader,
+            HashMap<String, List<String>> listChildData, ExpandableListView view) {
+        this._context = context;
+        this._listDataHeader = listDataHeader;
+        this._listDataChild = listChildData;
+        this.view = view;
+    }
+    
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
         return this._listDataChild.get(this._listDataHeader.get(groupPosition))
@@ -56,6 +65,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
  
         final String childText = (String) getChild(groupPosition, childPosition);
         final String groupText = (String) getGroup(groupPosition);
+        final int pos = groupPosition;
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -81,6 +91,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 	_listDataHeader.remove(groupText);
                 	_listDataChild.remove(groupText);
                 	Toast.makeText(_context, "Deleted"+ groupText, Toast.LENGTH_SHORT).show();
+                	view.collapseGroup(pos);
                 	notifyDataSetChanged();
                 }
             }
