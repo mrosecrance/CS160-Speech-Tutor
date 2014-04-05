@@ -17,6 +17,7 @@ import android.media.AudioRecord;
 import android.media.AudioTrack;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,9 +43,12 @@ public class Playback extends Activity {
 	    recordings.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 	    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 	    	String fileName=(String)(recordings.getItemAtPosition(position));
-	    	File file=  new File(fileName);
+	        File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "SpeechTutor");
+	        fileName= mediaStorageDir.getPath() + File.separator + fileName;
+	    	File file=  new File(Environment.getExternalStorageDirectory(),fileName);
 	    	int musicLength = (int)(file.length()/2);
 	          short[] music = new short[musicLength];
+		        Toast.makeText(getApplicationContext(), "Playing sound from "+ fileName, Toast.LENGTH_SHORT).show();
 	          try {
 	            InputStream is = new FileInputStream(file);
 	            BufferedInputStream bis = new BufferedInputStream(is);
@@ -55,7 +59,6 @@ public class Playback extends Activity {
 	              i++;
 	            }
 	            dis.close();     
-	            Toast.makeText(getApplicationContext(), "Playing sound from "+ fileName, Toast.LENGTH_SHORT).show();
 
 	            AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, 
 	                                                   8000, 
