@@ -10,7 +10,7 @@
     tools:context=".Record" >
 
     <ToggleButton
-        android:id="@+id/button1"
+        android:id="@+id/record"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
