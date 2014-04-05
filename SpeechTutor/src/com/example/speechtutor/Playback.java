@@ -45,6 +45,7 @@ public class Playback extends Activity {
 		        if(groupPosition != previousItem )
 		            recordings.collapseGroup(previousItem );
 		        previousItem = groupPosition;
+		        
 		    }
 		});
 		 

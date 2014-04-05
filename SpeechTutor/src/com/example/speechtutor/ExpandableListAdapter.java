@@ -14,7 +14,9 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.media.AudioFormat;
 import android.media.AudioManager;
+import android.media.AudioRecord;
 import android.media.AudioTrack;
+import android.media.MediaRecorder;
 import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -127,13 +129,18 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 	              i++;
 	            }
 	            dis.close();     
+	            int intSize = android.media.AudioTrack.getMinBufferSize(44100, AudioFormat.CHANNEL_CONFIGURATION_STEREO,
+	            		AudioFormat.ENCODING_PCM_16BIT); 
 
-	            AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, 
+	            		AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, 44100, AudioFormat.CHANNEL_CONFIGURATION_STEREO,
+	            		AudioFormat.ENCODING_PCM_16BIT, intSize, AudioTrack.MODE_STREAM); 
+
+	           /* AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, 
 	                                                   8000, 
 	                                                   AudioFormat.CHANNEL_IN_MONO,
 	                                                   AudioFormat.ENCODING_PCM_16BIT, 
 	                                                   musicLength, 
-	                                                   AudioTrack.MODE_STREAM);
+	                                                   AudioTrack.MODE_STREAM);*/
 
 	            audioTrack.play();
 	            audioTrack.write(music, 0, musicLength);
