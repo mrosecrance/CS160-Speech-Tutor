@@ -7,17 +7,17 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
-import android.app.Activity;
-import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -41,7 +41,7 @@ public class Record extends Activity {
 		bufferSize = AudioRecord.getMinBufferSize(SAMPLE_RATE, AudioFormat.CHANNEL_IN_MONO,
 	              AudioFormat.ENCODING_PCM_16BIT);
 	     
-	    buffer = new byte[bufferSize];
+	    buffer = new byte[bufferSize]; 
 		
 		
 	    //Set up Record Button
@@ -51,7 +51,11 @@ public class Record extends Activity {
 		    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 		        if(isChecked){ //record
 		        	recorder = new AudioRecord(MediaRecorder.AudioSource.MIC, SAMPLE_RATE, AudioFormat.CHANNEL_IN_MONO,
-		  	              AudioFormat.ENCODING_PCM_16BIT, 2048);
+		  	              AudioFormat.ENCODING_PCM_16BIT, AudioRecord.getMinBufferSize(SAMPLE_RATE, AudioFormat.CHANNEL_IN_MONO,
+		  	    				AudioFormat.ENCODING_PCM_16BIT)/2);
+		        	String permission = "android.permission.AUDIO_RECORD";
+		            int res = getBaseContext().checkCallingOrSelfPermission(permission);
+		            System.out.println (res == PackageManager.PERMISSION_GRANTED);  
 		        	recorder.startRecording();
 		        	isRecording = true;
 		            recordingThread = new Thread(new Runnable() {
