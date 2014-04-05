@@ -1,10 +1,19 @@
 package com.example.speechtutor;
 
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.AudioFormat;
+import android.media.AudioManager;
+import android.media.AudioTrack;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +21,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class Playback extends Activity {
 
@@ -20,18 +30,62 @@ public class Playback extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_playback);
 		
-		ListView recordings;
+		final ListView recordings;
 	    ArrayList<String> FilesInFolder = GetFiles("/sdcard/SpeechTutor");
 	    recordings = (ListView)findViewById(R.id.recordingsList);
 
 	    recordings.setAdapter(new ArrayAdapter<String>(this,
 	        android.R.layout.simple_list_item_1, FilesInFolder));
 
-	   /* lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+	    recordings.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 	    public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-	            // Clicking on items
+	    	String fileName=(String)(recordings.getItemAtPosition(position));
+	    	File file=  new File(fileName);
+	    	int musicLength = (int)(file.length()/2);
+	          short[] music = new short[musicLength];
+
+
+	          try {
+	            // Create a DataInputStream to read the audio data back from the saved file.
+	            InputStream is = new FileInputStream(file);
+	            BufferedInputStream bis = new BufferedInputStream(is);
+	            DataInputStream dis = new DataInputStream(bis);
+
+	            // Read the file into the music array.
+	            int i = 0;
+	            while (dis.available() > 0) {
+	              music[i] = dis.readShort();
+	              i++;
+	            }
+	            dis.close();     
+
+
+	            // Create a new AudioTrack object using the same parameters as the AudioRecord
+	            // object used to create the file.
+	            AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, 
+	                                                   8000, 
+	                                                   AudioFormat.CHANNEL_CONFIGURATION_MONO,
+	                                                   AudioFormat.ENCODING_PCM_16BIT, 
+	                                                   musicLength, 
+	                                                   AudioTrack.MODE_STREAM);
+	            
+	            audioTrack.play();
+
+	            audioTrack.write(music, 0, musicLength);
+            Toast.makeText(getApplicationContext(), "Playing sound from "+ fileName, Toast.LENGTH_SHORT).show();
+
+	         } catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally{
+	             Toast.makeText(getApplicationContext(), "Sorry can't play "+ fileName, Toast.LENGTH_SHORT).show();
+
 	         }
-	    });*/
+	    }
+	    });
 	}
 	
 	public ArrayList<String> GetFiles(String DirectoryPath) {
