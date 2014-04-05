@@ -28,7 +28,7 @@
         android:textOn="Stop" />
     
     <LinearLayout 
-        android:id="@+id/nav_menu"
+        android:id="@+id/nav_bar"
         android:layout_alignParentBottom="true"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -70,8 +70,8 @@
 
     
     <RelativeLayout 
-        android:id="@+id/finish_recording_menu"
-        android:layout_above="@+id/nav_menu"
+        android:id="@+id/finish_recording_bar"
+        android:layout_above="@+id/nav_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
