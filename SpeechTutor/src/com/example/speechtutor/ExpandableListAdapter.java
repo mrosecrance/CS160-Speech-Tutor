@@ -11,10 +11,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
+import android.net.Uri;
 import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -112,7 +114,21 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 		        }
 		    }
 		        });
- 
+		
+		ImageButton share_button = (ImageButton)convertView.findViewById(R.id.share);
+		share_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            	Intent shareIntent = new Intent();
+            	final File f= new File("/sdcard/SpeechTutor/"+groupText);
+            	shareIntent.setAction(Intent.ACTION_SEND);
+            	shareIntent.putExtra(Intent.EXTRA_STREAM,  Uri.fromFile(f));
+            	shareIntent.setDataAndType(Uri.fromFile(f), "text/plain"); 
+            	_context.startActivity(Intent.createChooser(shareIntent, "Share your Speech"));
+            }
+        });
+
+		
         txtListChild.setText(childText);
         return convertView;
         
