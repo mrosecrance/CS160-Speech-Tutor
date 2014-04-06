@@ -14,18 +14,19 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.media.AudioFormat;
 import android.media.AudioManager;
-import android.media.AudioRecord;
 import android.media.AudioTrack;
-import android.media.MediaRecorder;
 import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
  
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
  
@@ -77,10 +78,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         TextView txtListChild = (TextView) convertView
                 .findViewById(R.id.recordingPlayback);
         
-        TextView delete = (TextView) convertView
+        ImageButton delete = (ImageButton) convertView
                 .findViewById(R.id.delete);
         
-        TextView playback = (TextView) convertView
+        ToggleButton playback = (ToggleButton) convertView
                 .findViewById(R.id.playback);
         delete.setOnClickListener(new OnClickListener() {
 
@@ -99,17 +100,22 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             }
         });
         
-        playback.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-            	 System.out.println("Playback clicked");
-            	 playRecording(groupText);
-            }
-        });
+		playback.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+		    @Override
+		    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+		        if(isChecked){ //play
+		        	playRecording(groupText);
+		        	System.out.println("PLAY");
+		        }else{
+		        	//TODO: STOP RECORDING
+		        	System.out.println("STOP");
+		        }
+		    }
+		        });
  
         txtListChild.setText(childText);
         return convertView;
+        
     }
     
 	    public void playRecording(String fileName) {

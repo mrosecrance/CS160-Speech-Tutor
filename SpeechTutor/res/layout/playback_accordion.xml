@@ -27,43 +27,57 @@
     android:paddingRight="16dp"
     android:orientation="horizontal"
     android:layout_below="@id/playbackSeeker">
-         <TextView
+         <ImageButton
         android:id="@+id/beginning"
-        android:padding="10dp" 
+        android:paddingLeft="10dp" 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Beginning"/>
-	    <TextView
+        android:src="@drawable/ic_action_fast_forward"
+        android:rotation="180"
+        android:background="@null"/>
+	    <ToggleButton
         android:id="@+id/playback"
-        android:padding="10dp" 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Play"/>
-	    <TextView
+        android:paddingRight="10dp" 
+        android:paddingLeft="10dp" 
+        android:textOn=""
+        android:textOff=""
+
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/playlist_play"/>
+	    <ImageButton
         android:id="@+id/end"
-        android:padding="10dp" 
+        android:paddingLeft="10dp" 
+        
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="End"/>
+        android:src="@drawable/ic_action_fast_forward"
+        android:background="@null"/>
 	    
 	</LinearLayout>
  
-    <TextView
+    <ImageButton
         android:id="@+id/delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@id/playControls"
-        android:text="Delete"
+        android:src="@drawable/ic_action_delete"
+        android:background="@null"
+        android:paddingRight="30dp"
+        android:scaleType="fitCenter"
         />
     
-     <TextView
+     <ImageButton
         android:id="@+id/share"
+        android:scaleType="fitCenter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/playControls"
-        android:text="Share"/>
+        android:src="@drawable/ic_action_share"
+        android:paddingLeft="30dp"
+        android:background="@null"/>
      
      
  
