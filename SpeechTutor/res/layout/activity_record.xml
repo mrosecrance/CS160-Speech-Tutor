@@ -77,6 +77,6 @@
         android:layout_centerHorizontal="true"
         android:text="0"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="75sp" />
+        android:textSize="70sp" />
 
 </RelativeLayout>
