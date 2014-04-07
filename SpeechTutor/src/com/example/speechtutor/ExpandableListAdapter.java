@@ -135,45 +135,26 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     }
     
 	    public void playRecording(String fileName) {
-	        File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "SpeechTutor");
-	        fileName= mediaStorageDir.getPath() + File.separator + fileName;
-	    	File file=  new File(fileName);
-	    	int musicLength = (int)(file.length()/2);
-	          short[] music = new short[musicLength];
-		        Toast.makeText(_context, "Playing sound from "+ fileName, Toast.LENGTH_SHORT).show();
-	          try {
-	            InputStream is = new FileInputStream(file);
-	            BufferedInputStream bis = new BufferedInputStream(is);
-	            DataInputStream dis = new DataInputStream(bis);
-	            int i = 0;
-	            while (dis.available() > 0) {
-	              music[i] = dis.readShort();
-	              i++;
-	            }
-	            dis.close();     
-	            int intSize = android.media.AudioTrack.getMinBufferSize(44100, AudioFormat.CHANNEL_CONFIGURATION_STEREO,
-	            		AudioFormat.ENCODING_PCM_16BIT); 
+	    	 File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "SpeechTutor");
+             fileName= mediaStorageDir.getPath() + File.separator + fileName;
+             File file=  new File(fileName);
+             int musicLength = (int) file.length();
+             byte[] music = new byte[musicLength];
+                     Toast.makeText(_context, "Playing sound from "+ fileName, Toast.LENGTH_SHORT).show();
+               try {
+                 InputStream is = new FileInputStream(file);
+                 is.read(music);
+                 is.close();
+                } catch (IOException e) {
+                        //nothing
+                }
+                 int intSize = android.media.AudioTrack.getMinBufferSize(44100, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT);
 
-	            		AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, 44100, AudioFormat.CHANNEL_CONFIGURATION_STEREO,
-	            		AudioFormat.ENCODING_PCM_16BIT, intSize, AudioTrack.MODE_STREAM); 
+                 AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, 44100, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT, intSize, AudioTrack.MODE_STREAM);
 
-	           /* AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, 
-	                                                   8000, 
-	                                                   AudioFormat.CHANNEL_IN_MONO,
-	                                                   AudioFormat.ENCODING_PCM_16BIT, 
-	                                                   musicLength, 
-	                                                   AudioTrack.MODE_STREAM);*/
 
-	            audioTrack.play();
-	            audioTrack.write(music, 0, musicLength);
-
-	         } catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+                 audioTrack.play();
+                 audioTrack.write(music, 0, musicLength);
 	    }
 	   
  

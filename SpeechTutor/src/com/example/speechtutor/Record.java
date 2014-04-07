@@ -5,7 +5,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,21 +18,31 @@ import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.SystemClock;
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-public class Record extends Activity {
+public class Record extends Activity implements RecognitionListener {
+	
+	SpeechRecognizer mSpeechRecognizer;
+	Button umFinderButton;
+	int umCount;
+	boolean umBoolean = true; 
 	ToggleButton record;
 	AudioRecord recorder= null;
-	static final int SAMPLE_RATE = 8000;
+	static final int SAMPLE_RATE = 44100;
 	int bufferSize;
 	byte[] buffer;
 	boolean isRecording=false;
@@ -39,11 +52,18 @@ public class Record extends Activity {
 	Chronometer chronometer = null;
 	LinearLayout navBar = null;
 	RelativeLayout finishRecordingBar = null;
+	TextView umCounterDisplay;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_record);
+		
+	    //umCounterDisplay = (TextView) findViewById(R.id.textView1);
+	   // umCounterDisplay.setText(0);
+		// set up Speech to Text Recognizer 
+		mSpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
+		mSpeechRecognizer.setRecognitionListener(this);
 		
 		//Set up Recording functionality
 		bufferSize = AudioRecord.getMinBufferSize(SAMPLE_RATE, AudioFormat.CHANNEL_IN_MONO,
@@ -94,6 +114,36 @@ public class Record extends Activity {
 		        }
 		    }
 		});
+		
+		// Set up Um Button
+		umFinderButton = (Button) findViewById(R.id.umbutton);
+
+		umFinderButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				
+				if (umBoolean) {
+					
+					Intent i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+					i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,  RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+					i.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak!");
+					i.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, "com.example.speechtotext");
+					i.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, new Long(5000000));
+					mSpeechRecognizer.startListening(i);
+					umFinderButton.setText("Stop um finder");
+					umBoolean = false;
+				}
+				else {
+					mSpeechRecognizer.stopListening();
+					umCount = 0;
+					umBoolean = true;
+					umFinderButton.setText("Count your ums!");
+				}
+				
+			}
+		});
+		
 	}
 	private void saveAudioDataToFile() {
 
@@ -208,6 +258,76 @@ public class Record extends Activity {
         recordingInProgress=false;
         Toast.makeText(getApplicationContext(), "Audio Saved to "+ filePath,
                    Toast.LENGTH_SHORT).show();
+	}
+	@Override
+	public void onBeginningOfSpeech() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onBufferReceived(byte[] arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onEndOfSpeech() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onError(int arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onEvent(int arg0, Bundle arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onPartialResults(Bundle arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onReadyForSpeech(Bundle arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void onResults(Bundle arg0) {
+		// TODO Auto-generated method stub
+	    
+		umCounterDisplay = (TextView) findViewById(R.id.textView1);
+
+	    ArrayList<String> speechResults = arg0.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+		if (speechResults.size() > 0) {
+			
+			
+			String str = speechResults.get(0);
+		    Pattern p = Pattern.compile("um");
+		    Matcher m = p.matcher(str);
+		    
+		    while (m.find()){
+		    	umCount +=1;
+		    }
+		   umCounterDisplay.setText(" "+umCount);
+
+			System.out.println("what do you know: " + speechResults.get(0));
+		} else {
+			System.out.println("what do you know!!!!!!!!!!");
+
+		}
+		umCount = 0;
+		umBoolean = true;
+		umFinderButton.setText("Count your ums!");
+
+		
+	}
+	@Override
+	public void onRmsChanged(float arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

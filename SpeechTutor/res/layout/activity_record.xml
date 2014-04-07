@@ -8,14 +8,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="#00a0b0"
     tools:context=".Record" >
-    
-    <Chronometer 
-        android:id="@+id/chronometer"
-        android:layout_width = "wrap_content"
-        android:layout_height = "wrap_content"
-        android:layout_above="@+id/record"
-        android:textSize="100sp"
-        android:layout_centerHorizontal="true"/>
 
     <ToggleButton
         android:id="@+id/record"
@@ -60,5 +52,31 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         layout="@layout/nav_bar" />
+
+    <Chronometer
+        android:id="@+id/chronometer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/record"
+        android:layout_centerHorizontal="true"
+        android:textSize="100sp" />
+
+    <Button
+        android:id="@+id/umbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/nav_bar"
+        android:layout_centerHorizontal="true"
+        android:text="Count your ums!" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/umbutton"
+        android:layout_centerHorizontal="true"
+        android:text="0"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="75sp" />
 
 </RelativeLayout>
