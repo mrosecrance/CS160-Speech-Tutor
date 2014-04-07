@@ -56,3 +56,5 @@ proguard/
 #Eclipse junk
 .metadata/
 .settings/
+
+.DS_Store
