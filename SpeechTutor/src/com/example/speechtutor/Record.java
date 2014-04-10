@@ -16,6 +16,7 @@ import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.SystemClock;
 import android.speech.RecognitionListener;
@@ -23,7 +24,6 @@ import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
@@ -37,7 +37,9 @@ import android.widget.ToggleButton;
 public class Record extends Activity implements RecognitionListener {
 	
 	SpeechRecognizer mSpeechRecognizer;
+	CountDownTimer mtimer;
 	Button umFinderButton;
+	int partialumCount;
 	int umCount;
 	boolean umBoolean = true; 
 	ToggleButton record;
@@ -128,8 +130,9 @@ public class Record extends Activity implements RecognitionListener {
 					Intent i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 					i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,  RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
 					i.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak!");
+					i.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);
 					i.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, "com.example.speechtotext");
-					i.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, new Long(5000000));
+					i.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, new Long(5000));
 					mSpeechRecognizer.startListening(i);
 					umFinderButton.setText("Stop um finder");
 					umBoolean = false;
@@ -210,19 +213,7 @@ public class Record extends Activity implements RecognitionListener {
 		getMenuInflater().inflate(R.menu.record, menu);
 		return true;
 	}
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-	    // Handle item selection
-	    switch (item.getItemId()) {
-	        case R.id.action_record:
-	            return true;
-	        case R.id.action_playback:
-	        	startActivity(new Intent(this, Playback.class));
-	            return true;
-	        default:
-	            return super.onOptionsItemSelected(item);
-	    }
-	}
+	
 	
 	public void navigate(View view) {
 		Class classToStart = null;
@@ -272,11 +263,34 @@ public class Record extends Activity implements RecognitionListener {
 	@Override
 	public void onEndOfSpeech() {
 		// TODO Auto-generated method stub
+		System.out.println("SUP");
+		/*if(!umBoolean){
+			Intent i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+			i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,  RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+			i.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak!");
+			i.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);
+			i.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, "com.example.speechtotext");
+			i.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, new Long(5000000));
+			mSpeechRecognizer.startListening(i);
+			System.out.println("restarting");
+			//umFinderButton.setText("Stop um finder");
+		}*/
 		
 	}
 	@Override
 	public void onError(int arg0) {
 		// TODO Auto-generated method stub
+		if(!umBoolean){
+			Intent i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+			i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,  RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+			i.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak!");
+			i.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);
+			i.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, "com.example.speechtotext");
+			i.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, new Long(5000));
+			mSpeechRecognizer.startListening(i);
+			System.out.println("restarting cause error and idk why");
+			//umFinderButton.setText("Stop um finder");
+		}
 		
 	}
 	@Override
@@ -287,19 +301,8 @@ public class Record extends Activity implements RecognitionListener {
 	@Override
 	public void onPartialResults(Bundle arg0) {
 		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void onReadyForSpeech(Bundle arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void onResults(Bundle arg0) {
-		// TODO Auto-generated method stub
-	    
 		umCounterDisplay = (TextView) findViewById(R.id.textView1);
-
+		partialumCount = 0;
 	    ArrayList<String> speechResults = arg0.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
 		if (speechResults.size() > 0) {
 			
@@ -309,18 +312,80 @@ public class Record extends Activity implements RecognitionListener {
 		    Matcher m = p.matcher(str);
 		    
 		    while (m.find()){
-		    	umCount +=1;
+		    	partialumCount += 1;
 		    }
-		   umCounterDisplay.setText(" "+umCount);
+		   umCounterDisplay.setText(" "+(umCount+partialumCount));
 
 			System.out.println("what do you know: " + speechResults.get(0));
 		} else {
 			System.out.println("what do you know!!!!!!!!!!");
 
 		}
-		umCount = 0;
-		umBoolean = true;
-		umFinderButton.setText("Count your ums!");
+		//umCount = 0;
+		
+		
+	}
+	@Override
+	public void onReadyForSpeech(Bundle arg0) {
+		// TODO Auto-generated method stub
+		if(mtimer != null) {
+            mtimer.cancel();
+        }
+	}
+	
+
+	
+	@Override
+	public void onResults(Bundle arg0) {
+		// TODO Auto-generated method stub
+		if(mtimer != null){
+            mtimer.cancel();
+        }
+		partialumCount = 0;
+		ArrayList<String> speechResults = arg0.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+		if (speechResults.size() > 0) {
+			
+			
+			String str = speechResults.get(0);
+		    Pattern p = Pattern.compile("um");
+		    Matcher m = p.matcher(str);
+		    
+		    while (m.find()){
+		    	partialumCount += 1;
+		    }
+		   umCounterDisplay.setText(" "+(umCount+partialumCount));
+		   umCount = umCount+partialumCount;
+			System.out.println("what do you know: " + speechResults.get(0));
+		} else {
+			System.out.println("what do you know!!!!!!!!!!");
+
+		}
+		if(!umBoolean){
+			final Intent i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+			i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,  RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+			i.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak!");
+			i.putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true);
+			i.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, "com.example.speechtotext");
+			i.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, new Long(5000000));
+			mSpeechRecognizer.startListening(i);
+			if(mtimer == null) {
+                mtimer = new CountDownTimer(2000, 500) {
+                    @Override
+                    public void onTick(long l) {
+                    }
+
+                    @Override
+                    public void onFinish() {
+                       
+                        mSpeechRecognizer.cancel();
+                        mSpeechRecognizer.startListening(i);
+                    }
+                };
+            }
+            mtimer.start();
+			System.out.println("restarting");
+			//umFinderButton.setText("Stop um finder");
+		}
 
 		
 	}
