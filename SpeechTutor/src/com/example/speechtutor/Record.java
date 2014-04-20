@@ -148,6 +148,7 @@ public class Record extends Activity implements RecognitionListener {
 		});
 		
 	}
+
 	private void saveAudioDataToFile() {
 
         File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "SpeechTutor");
@@ -195,6 +196,7 @@ public class Record extends Activity implements RecognitionListener {
 	    }
 		
 	}
+
 	private byte[] short2byte(short[] sData) {
 	    int shortArrsize = sData.length;
 	    byte[] bytes = new byte[shortArrsize * 2];
