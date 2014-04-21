@@ -20,7 +20,6 @@ public class Statistics extends Activity {
 		getMenuInflater().inflate(R.menu.statistics, menu);
 		return true;
 	}
-	
 	public void navigate(View view) {
 		Class classToStart = null;
 		switch(view.getId()) {
