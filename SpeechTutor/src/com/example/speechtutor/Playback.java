@@ -101,6 +101,12 @@ public class Playback extends Activity {
 		case R.id.nav_record:
 			classToStart = Record.class;
 			break;
+		case R.id.nav_statistics:
+			classToStart = Statistics.class;
+			break;
+		case R.id.nav_settings:
+			classToStart = Settings.class;
+			break;
 		}
 		Intent intent = new Intent(this, classToStart);
 		intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);

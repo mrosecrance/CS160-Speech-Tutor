@@ -26,8 +26,18 @@
             android:name="com.example.speechtutor.Playback"
             android:label="@string/title_activity_playback" >
         </activity>
-        
+        <activity
+            android:name="com.example.speechtutor.Statistics"
+            android:label="@string/title_activity_statistics" >
+        </activity>
+        <activity
+            android:name="com.example.speechtutor.Settings"
+            android:label="@string/title_activity_settings" >
+        </activity>
     </application>
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO"></uses-permission>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" >
+    </uses-permission>
+
 </manifest>
