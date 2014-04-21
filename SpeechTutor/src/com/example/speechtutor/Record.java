@@ -77,12 +77,17 @@ public class Record extends Activity implements RecognitionListener {
 	    navBar = (LinearLayout) findViewById(R.id.nav_bar);
 	    finishRecordingBar = (RelativeLayout) findViewById(R.id.finish_recording_bar);
 		
+	    // Set up Um Button
+		umFinderButton = (Button) findViewById(R.id.umbutton);
+		
 	    //Set up Record Button
 		record = (ToggleButton) findViewById(R.id.record);
 		record.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 		    @Override
 		    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 		        if(isChecked){ //record
+		        	umFinderButton.setVisibility(View.GONE); // temp change while two buttons
+		        	
 		        	recorder = new AudioRecord(MediaRecorder.AudioSource.MIC, SAMPLE_RATE, AudioFormat.CHANNEL_IN_MONO,
 		  	              AudioFormat.ENCODING_PCM_16BIT, AudioRecord.getMinBufferSize(SAMPLE_RATE, AudioFormat.CHANNEL_IN_MONO,
 		  	    				AudioFormat.ENCODING_PCM_16BIT)); 	
@@ -104,6 +109,7 @@ public class Record extends Activity implements RecognitionListener {
 		            }, "AudioRecorder Thread");
 		            recordingThread.start();
 		        }else{ //stop
+		        	 
 		        	 if (null != recorder) {
 		        	        isRecording = false;
 		        	        chronometer.stop();
@@ -117,8 +123,7 @@ public class Record extends Activity implements RecognitionListener {
 		    }
 		});
 		
-		// Set up Um Button
-		umFinderButton = (Button) findViewById(R.id.umbutton);
+		
 
 		umFinderButton.setOnClickListener(new View.OnClickListener() {
 			
@@ -126,7 +131,7 @@ public class Record extends Activity implements RecognitionListener {
 			public void onClick(View v) {
 				
 				if (umBoolean) {
-					
+					record.setVisibility(View.GONE);
 					Intent i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 					i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,  RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
 					i.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak!");
@@ -134,14 +139,15 @@ public class Record extends Activity implements RecognitionListener {
 					i.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, "com.example.speechtotext");
 					i.putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, new Long(5000));
 					mSpeechRecognizer.startListening(i);
-					umFinderButton.setText("Stop um finder");
+					umFinderButton.setText("Stop filler finder");
 					umBoolean = false;
 				}
 				else {
+					record.setVisibility(View.VISIBLE);
 					mSpeechRecognizer.stopListening();
 					umCount = 0;
 					umBoolean = true;
-					umFinderButton.setText("Count your ums!");
+					umFinderButton.setText("Count filler words");
 				}
 				
 			}
@@ -234,6 +240,7 @@ public class Record extends Activity implements RecognitionListener {
 	
 	public void cancelRecording(View view) {
         navBar.setVisibility(View.VISIBLE);
+        umFinderButton.setVisibility(View.VISIBLE);// temp change while two buttons
         finishRecordingBar.setVisibility(View.GONE);
         recordingInProgress=false;
         chronometer.setBase(SystemClock.elapsedRealtime());
@@ -247,6 +254,7 @@ public class Record extends Activity implements RecognitionListener {
 	public void saveRecording(View view) {
 		saveAudioDataToFile();
         navBar.setVisibility(View.VISIBLE);
+        umFinderButton.setVisibility(View.VISIBLE);// temp change while two buttons
         finishRecordingBar.setVisibility(View.GONE);
         recordingInProgress=false;
         Toast.makeText(getApplicationContext(), "Audio Saved to "+ filePath,

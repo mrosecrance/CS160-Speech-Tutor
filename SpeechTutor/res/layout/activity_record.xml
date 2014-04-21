@@ -67,7 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/nav_bar"
         android:layout_centerHorizontal="true"
-        android:text="Count your ums!" />
+        android:text="Count filler words" />
 
     <TextView
         android:id="@+id/textView1"
