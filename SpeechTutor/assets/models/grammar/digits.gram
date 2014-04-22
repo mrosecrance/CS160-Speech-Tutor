@@ -2,16 +2,12 @@
 
 grammar digits;
 
-<digit> = oh    |
-          zero  |
-          one   |
-          two   |
-          three |
-          four  |
-          five  |
-          six   |
-          seven |
-          eight |
-          nine  ;
+<digit> = uh    |
+          uhh   |
+          um    |
+          umm   |
+          er    |
+          err   |
+          ah    ;
 
 public <digits> = <digit>+;

@@ -94,7 +94,12 @@ RecognitionListener {
                 .setKeywordThreshold(1e-5f)
                 .setAudioStorageDirectory("SpeechTutor")
                 .getRecognizer();
+		File fillerGrammar = new File(appDir, "models/grammar/digits.gram");
+        recognizer.addGrammarSearch(DIGITS_SEARCH, fillerGrammar);
+        switchSearch(DIGITS_SEARCH);
 		Log.d(TAG,"after recognizer instantiaiton");
+		
+		filePath = recognizer.getAudioStorageFilePath();
 
         recognizer.addListener(this);
         // Create keyword-activation search.
@@ -155,19 +160,13 @@ RecognitionListener {
         				isRecording = false;
         				chronometer.stop();
         				recognizer.stop();
-        				//		        	        recorder.release();
         			}
-
         		}
                 Log.d(TAG,"completed onChecked Changed");
-
         	}
         });
         Log.d(TAG,"after recognizer button is created");
-
-
 	}
-
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -175,7 +174,6 @@ RecognitionListener {
 		getMenuInflater().inflate(R.menu.record, menu);
 		return true;
 	}
-	
 	
 	public void navigate(View view) {
 		Class classToStart = null;
