@@ -221,8 +221,9 @@ RecognitionListener {
         }
 		
 	}
+	
     private void switchSearch(String searchName) {
-        recognizer.stop();
+        recognizer.cancel();
         recognizer.startListening(searchName);
     }
 
