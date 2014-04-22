@@ -42,6 +42,7 @@ public class SpeechRecognizerRecorder {
 
     private final int sampleRate;
     
+    private File audioStorageDirectory = null;
     private String audioStorageFilePath = null;
     private FileOutputStream audioOutputStream = null;
 
@@ -54,7 +55,7 @@ public class SpeechRecognizerRecorder {
         decoder = new Decoder(config);
 	
         //Prepare for writing
-    	File audioStorageDirectory = new File(Environment.getExternalStorageDirectory(), outputDirectoryName);
+    	audioStorageDirectory = new File(Environment.getExternalStorageDirectory(), outputDirectoryName);
     	if (! audioStorageDirectory.exists()){
             if (! audioStorageDirectory.mkdirs()){
                 Log.d("SpeechTutor", "failed to create directory");
@@ -64,15 +65,6 @@ public class SpeechRecognizerRecorder {
             	Log.i("SpeechTutor", "created speech directory");
             }
         }
-
-    	audioStorageFilePath = new SimpleDateFormat("yyyy-MM-dd hh-mm-ss'.pcm'", Locale.US).format(new Date());
-		audioStorageFilePath = audioStorageDirectory.getPath() + File.separator +   "PCM_" + audioStorageFilePath;
-	    try {
-	        audioOutputStream = new FileOutputStream(audioStorageFilePath);
-	    } catch (FileNotFoundException e) {
-	        e.printStackTrace();
-	    }
-
     }
 
     /**
@@ -101,14 +93,17 @@ public class SpeechRecognizerRecorder {
     public boolean startListening(String searchName) {
         if (null != recognizerThread)
             return false;
-
+        if (null == audioOutputStream) {
+        	setAudioStorageFile();
+        }
+    	
         Log.i(TAG, format("Start recognition \"%s\"", searchName));
         decoder.setSearch(searchName);
         recognizerThread = new RecognizerThread();
         recognizerThread.start();
         return true;
     }
-
+   
     private boolean stopRecognizerThread() {
         if (null == recognizerThread)
             return false;
@@ -120,7 +115,7 @@ public class SpeechRecognizerRecorder {
             // Restore the interrupted status.
             Thread.currentThread().interrupt();
         }
-
+                
         recognizerThread = null;
         return true;
     }
@@ -315,5 +310,26 @@ public class SpeechRecognizerRecorder {
 	
 	public Decoder getDecoder() {
 		return decoder;
-	}
+	} 
+
+    public boolean setAudioStorageFile() {
+    	if(null != audioOutputStream) {
+            try {
+                audioOutputStream.close();
+            } catch (IOException e){
+                Log.d(TAG, "Could not close audioOutputStream");
+            }
+        }
+
+    	audioStorageFilePath = new SimpleDateFormat("yyyy-MM-dd hh-mm-ss'.pcm'", Locale.US).format(new Date());
+		audioStorageFilePath = audioStorageDirectory.getPath() + File.separator +   "PCM_" + audioStorageFilePath;
+	    try {
+	        audioOutputStream = new FileOutputStream(audioStorageFilePath);
+	    } catch (FileNotFoundException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	    return true;
+    }
+
 }
