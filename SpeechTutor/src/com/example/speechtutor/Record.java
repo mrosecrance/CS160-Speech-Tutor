@@ -69,7 +69,7 @@ RecognitionListener {
     private static final String FORECAST_SEARCH = "forecast";
     private static final String DIGITS_SEARCH = "digits";
     private static final String MENU_SEARCH = "menu";
-    private static final String KEYPHRASE = "oh mighty computer";
+    private static final String KEYPHRASE = "chicken";
 
 	
 	@Override
@@ -233,6 +233,8 @@ RecognitionListener {
         if (text.equals(KEYPHRASE)){
         	umCount++;
         	umCounterDisplay.setText(" "+(umCount));
+            switchSearch(KWS_SEARCH_NAME);
+
         }
 		
 	}
@@ -244,12 +246,14 @@ RecognitionListener {
 	@Override
 	public void onResult(Hypothesis hypothesis) {
 		// TODO Auto-generated method stub
-		String text = hypothesis.getHypstr();
-        Log.d(getClass().getSimpleName(), "on partial: " + text);
-        if (text.equals(KEYPHRASE)){
-        	umCount++;
-        	umCounterDisplay.setText(" "+(umCount));
-        }
+//		String text = hypothesis.getHypstr();
+//        Log.d(getClass().getSimpleName(), "on result: " + text);
+//        if (text.equals(KEYPHRASE)){
+//        	umCount++;
+//        	umCounterDisplay.setText(" "+(umCount));
+//            switchSearch(KWS_SEARCH_NAME);
+//
+//        }
 		
 	}
 	
