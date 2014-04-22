@@ -6,15 +6,19 @@ import java.io.File;
 import java.io.IOException;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.SystemClock;
+import android.text.Editable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -56,7 +60,7 @@ RecognitionListener {
     private static final String FORECAST_SEARCH = "forecast";
     private static final String DIGITS_SEARCH = "digits";
     private static final String MENU_SEARCH = "menu";
-    private static final String KEYPHRASE = "eight";
+    private static final String KEYPHRASE = "um";
 
 	
 	@Override
@@ -193,8 +197,27 @@ RecognitionListener {
         navBar.setVisibility(View.VISIBLE);
         finishRecordingBar.setVisibility(View.GONE);
         recordingInProgress=false;
-        Toast.makeText(getApplicationContext(), "Audio Saved to "+ filePath,
-                   Toast.LENGTH_SHORT).show();
+       
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        
+        alert.setTitle("Enter Recording Name");
+
+        // Set an EditText view to get user input 
+        final EditText input = new EditText(this);
+        alert.setView(input);
+
+        alert.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+        public void onClick(DialogInterface dialog, int whichButton) {
+        Editable value = input.getText();
+	        File from = new File(filePath);
+	        File to = new File(from.getParent(), value + ".pcm");
+	        from.renameTo(to);
+	        Toast.makeText(getApplicationContext(), "Audio Saved to "+ to.getPath(),
+	                   Toast.LENGTH_SHORT).show();
+         }
+        });
+
+         alert.show();
 	}
 	@Override
 	public void onBeginningOfSpeech() {
@@ -216,8 +239,10 @@ RecognitionListener {
         if (text.equals(KEYPHRASE)){
         	umCount++;
         	umCounterDisplay.setText(" "+(umCount));
+            switchSearch(DIGITS_SEARCH);
+
         }
-        switchSearch(DIGITS_SEARCH);
+		
 	}
 	
     private void switchSearch(String searchName) {
