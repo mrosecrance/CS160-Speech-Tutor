@@ -98,6 +98,8 @@ RecognitionListener {
         recognizer.addGrammarSearch(DIGITS_SEARCH, fillerGrammar);
         switchSearch(DIGITS_SEARCH);
 		Log.d(TAG,"after recognizer instantiaiton");
+		
+		filePath = recognizer.getAudioStorageFilePath();
 
         recognizer.addListener(this);
         // Create keyword-activation search.
@@ -166,14 +168,12 @@ RecognitionListener {
         Log.d(TAG,"after recognizer button is created");
 	}
 
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.record, menu);
 		return true;
 	}
-	
 	
 	public void navigate(View view) {
 		Class classToStart = null;
