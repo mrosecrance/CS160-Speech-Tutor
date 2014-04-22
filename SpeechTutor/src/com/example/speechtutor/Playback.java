@@ -8,6 +8,7 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,13 +20,18 @@ public class Playback extends Activity {
 	List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild = new HashMap<String, List<String>>();
     ExpandableListView recordings;
-	
+    @Override
+    protected void onResume() {
+
+       super.onResume();
+       this.onCreate(null);
+    }
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_playback);
 		recordings = (ExpandableListView)findViewById(R.id.recordingsList);
-	    ArrayList<String> FilesInFolder = GetFiles("/sdcard/SpeechTutor");
+	    ArrayList<String> FilesInFolder = GetFiles(Environment.getExternalStorageDirectory()+"/SpeechTutor");
 	    if(FilesInFolder == null){
 	    	FilesInFolder = new ArrayList<String>();
 	    }
