@@ -20,7 +20,12 @@ public class Playback extends Activity {
 	List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild = new HashMap<String, List<String>>();
     ExpandableListView recordings;
-	
+    @Override
+    protected void onResume() {
+
+       super.onResume();
+       this.onCreate(null);
+    }
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
