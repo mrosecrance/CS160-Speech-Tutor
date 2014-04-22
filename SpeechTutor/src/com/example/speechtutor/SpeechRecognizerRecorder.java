@@ -312,4 +312,8 @@ public class SpeechRecognizerRecorder {
 	public String getAudioStorageFilePath() {
 		return audioStorageFilePath;
 	}
+	
+	public Decoder getDecoder() {
+		return decoder;
+	}
 }
