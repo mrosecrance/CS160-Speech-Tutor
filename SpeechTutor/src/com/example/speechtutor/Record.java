@@ -4,6 +4,8 @@ import static edu.cmu.pocketsphinx.Assets.syncAssets;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -61,13 +63,21 @@ RecognitionListener {
     private static final String DIGITS_SEARCH = "digits";
     private static final String MENU_SEARCH = "menu";
     private static final String KEYPHRASE = "um";
+    private static final Map<String, Boolean> FILLER_WORDS = new HashMap<String, Boolean>();
 
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
-
+        
+        FILLER_WORDS.put("uh", true);
+        FILLER_WORDS.put("uhh", true);
+        FILLER_WORDS.put("um", true);
+        FILLER_WORDS.put("umm", true);
+        FILLER_WORDS.put("er", true);
+        FILLER_WORDS.put("err", true);
+        FILLER_WORDS.put("ah", true);
 
 		try {
 			Log.d(TAG,"before trying to sync assets");
@@ -237,9 +247,10 @@ RecognitionListener {
 	@Override
 	public void onPartialResult(Hypothesis hypothesis) {
 		// TODO Auto-generated method stub
-		String text = hypothesis.getHypstr();
+		String[] splitText = hypothesis.getHypstr().split(" ");
+		String text = splitText[splitText.length-1];
         Log.d(getClass().getSimpleName(), "on partial: " + text);
-        if (text.equals(KEYPHRASE)){
+        if (FILLER_WORDS.get(text)) {
         	Log.d(TAG, "Match: "+text);
         	umCount++;
         	umCounterDisplay.setText(" "+(umCount));
