@@ -155,17 +155,12 @@ RecognitionListener {
         				isRecording = false;
         				chronometer.stop();
         				recognizer.stop();
-        				//		        	        recorder.release();
         			}
-
         		}
                 Log.d(TAG,"completed onChecked Changed");
-
         	}
         });
         Log.d(TAG,"after recognizer button is created");
-
-
 	}
 
 
