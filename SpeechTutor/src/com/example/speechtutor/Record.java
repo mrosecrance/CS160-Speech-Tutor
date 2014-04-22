@@ -98,6 +98,17 @@ RecognitionListener {
 		Log.d(TAG,"after recognizer instantiaiton");
 
         recognizer.addListener(this);
+        // Create keyword-activation search.
+        recognizer.addKeywordSearch(KWS_SEARCH_NAME, KEYPHRASE);
+        // Create grammar-based searches.
+        File menuGrammar = new File(appDir, "models/grammar/menu.gram");
+        recognizer.addGrammarSearch(MENU_SEARCH, menuGrammar);
+        File digitsGrammar = new File(appDir, "models/grammar/digits.gram");
+        recognizer.addGrammarSearch(DIGITS_SEARCH, digitsGrammar);
+        // Create language model search.
+        File languageModel = new File(appDir, "models/lm/weather.dmp");
+        recognizer.addNgramSearch(FORECAST_SEARCH, languageModel);
+
 
         Log.d(TAG,"addlistener this");
 
@@ -123,22 +134,8 @@ RecognitionListener {
 
         		if(isChecked){ //record
                     Log.d(TAG,"inside if isChecked");
-
-
-                    // Create keyword-activation search.
-                    recognizer.addKeywordSearch(KWS_SEARCH_NAME, KEYPHRASE);
-                    // Create grammar-based searches.
-                    File menuGrammar = new File(appDir, "models/grammar/menu.gram");
-                    recognizer.addGrammarSearch(MENU_SEARCH, menuGrammar);
-                    File digitsGrammar = new File(appDir, "models/grammar/digits.gram");
-                    recognizer.addGrammarSearch(DIGITS_SEARCH, digitsGrammar);
-                    // Create language model search.
-                    File languageModel = new File(appDir, "models/lm/weather.dmp");
-                    recognizer.addNgramSearch(FORECAST_SEARCH, languageModel);
-
                     switchSearch(KWS_SEARCH_NAME);
                     Log.d(TAG,"startListening for ums");
-                    
 
         			isRecording = true;
         			if(!recordingInProgress) {
