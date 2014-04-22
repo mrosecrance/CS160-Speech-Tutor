@@ -122,6 +122,9 @@ RecognitionListener {
                 Log.d(TAG,"before if isChecked");
 
         		if(isChecked){ //record
+        			if(recordingInProgress == false) {
+        				recognizer.setAudioStorageFile();
+        			}
                     Log.d(TAG,"inside if isChecked");
                     switchSearch(DIGITS_SEARCH);
                     Log.d(TAG,"startListening for ums");
@@ -199,13 +202,11 @@ RecognitionListener {
 	@Override
 	public void onBeginningOfSpeech() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void onEndOfSpeech() {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -214,8 +215,11 @@ RecognitionListener {
 		String text = hypothesis.getHypstr();
         Log.d(getClass().getSimpleName(), "on partial: " + text);
         if (text.equals(KEYPHRASE)){
+        	Log.w(TAG, "Match: "+text);
         	umCount++;
         	umCounterDisplay.setText(" "+(umCount));
+        } else {
+        	Log.w(TAG, "Not match: "+text);
         }
         switchSearch(DIGITS_SEARCH);
 	}
