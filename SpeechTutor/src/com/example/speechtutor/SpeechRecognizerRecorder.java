@@ -308,4 +308,8 @@ public class SpeechRecognizerRecorder {
 	    }
 	    return bytes;
 	}
+	
+	public String getAudioStorageFilePath() {
+		return audioStorageFilePath;
+	}
 }
