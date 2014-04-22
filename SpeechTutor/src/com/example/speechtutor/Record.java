@@ -72,11 +72,11 @@ RecognitionListener {
         setContentView(R.layout.activity_record);
         
         FILLER_WORDS.put("uh", true);
-        FILLER_WORDS.put("uhh", true);
+        FILLER_WORDS.put("uhh", false);
         FILLER_WORDS.put("um", true);
-        FILLER_WORDS.put("umm", true);
+        FILLER_WORDS.put("umm", false);
         FILLER_WORDS.put("er", true);
-        FILLER_WORDS.put("err", true);
+        FILLER_WORDS.put("err", false);
         FILLER_WORDS.put("ah", true);
 
 		try {
