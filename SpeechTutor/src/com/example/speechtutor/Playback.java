@@ -8,6 +8,7 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,7 +26,7 @@ public class Playback extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_playback);
 		recordings = (ExpandableListView)findViewById(R.id.recordingsList);
-	    ArrayList<String> FilesInFolder = GetFiles("/sdcard/SpeechTutor");
+	    ArrayList<String> FilesInFolder = GetFiles(Environment.getExternalStorageDirectory()+"/SpeechTutor");
 	    if(FilesInFolder == null){
 	    	FilesInFolder = new ArrayList<String>();
 	    }

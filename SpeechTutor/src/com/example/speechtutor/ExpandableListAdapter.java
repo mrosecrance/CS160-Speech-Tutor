@@ -146,10 +146,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 		        	System.out.println("PLAY");
 		        }else{
 		        	//TODO: STOP RECORDING
-		        	playing.flush();
-		        	playing.stop();
-		        	playing.release();
-		        	playing = null;
+		        	if(playing != null){
+		        		playing.flush();
+			        	playing.stop();
+			        	playing.release();
+			        	playing = null;
+		        	}
 		        }
 		    }
 		        });
