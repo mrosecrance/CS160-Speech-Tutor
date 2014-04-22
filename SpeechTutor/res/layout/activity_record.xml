@@ -61,20 +61,12 @@
         android:layout_centerHorizontal="true"
         android:textSize="100sp" />
 
-    <Button
-        android:id="@+id/umbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/nav_bar"
-        android:layout_centerHorizontal="true"
-        android:text="Count your ums!" />
-
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/fillerword_counter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/umbutton"
         android:layout_centerHorizontal="true"
+        android:layout_below="@+id/record"
         android:text="0"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="70sp" />
