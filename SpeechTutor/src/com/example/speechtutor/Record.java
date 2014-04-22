@@ -55,7 +55,6 @@ RecognitionListener {
 	byte[] buffer;
 	boolean isRecording=false;
 	boolean recordingInProgress=false;
-	Thread recordingThread;
 	String filePath;
 	public Chronometer chronometer;
 	LinearLayout navBar = null;
@@ -157,8 +156,6 @@ RecognitionListener {
         				chronometer.stop();
         				recognizer.stop();
         				//		        	        recorder.release();
-        				recognizer = null;
-        				recordingThread = null;
         			}
 
         		}
