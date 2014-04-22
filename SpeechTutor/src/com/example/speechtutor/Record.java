@@ -128,6 +128,7 @@ RecognitionListener {
         		if(isChecked){ //record
         			if(recordingInProgress == false) {
         				recognizer.setAudioStorageFile();
+        				filePath = recognizer.getAudioStorageFilePath();
         			}
                     Log.d(TAG,"inside if isChecked");
                     switchSearch(DIGITS_SEARCH);
@@ -191,6 +192,7 @@ RecognitionListener {
         chronometer.stop();
         //filePath isn't being created in this class... add a public method to SpeechRecognizerRecorder
         File recording = new File(filePath);
+        Log.w(TAG, "Trying to delete recording");
         recording.delete();
         Log.d("Record", "Deleted recording exists: "+recording.exists());
 	}
