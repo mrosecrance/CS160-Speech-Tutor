@@ -94,6 +94,9 @@ RecognitionListener {
                 .setKeywordThreshold(1e-5f)
                 .setAudioStorageDirectory("SpeechTutor")
                 .getRecognizer();
+		File fillerGrammar = new File(appDir, "models/grammar/digits.gram");
+        recognizer.addGrammarSearch(DIGITS_SEARCH, fillerGrammar);
+        switchSearch(DIGITS_SEARCH);
 		Log.d(TAG,"after recognizer instantiaiton");
 
         recognizer.addListener(this);
