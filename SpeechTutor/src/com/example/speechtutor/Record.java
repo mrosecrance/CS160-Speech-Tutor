@@ -56,7 +56,7 @@ RecognitionListener {
     private static final String FORECAST_SEARCH = "forecast";
     private static final String DIGITS_SEARCH = "digits";
     private static final String MENU_SEARCH = "menu";
-    private static final String KEYPHRASE = "chicken";
+    private static final String KEYPHRASE = "eight";
 
 	
 	@Override
@@ -216,10 +216,8 @@ RecognitionListener {
         if (text.equals(KEYPHRASE)){
         	umCount++;
         	umCounterDisplay.setText(" "+(umCount));
-            switchSearch(DIGITS_SEARCH);
-
         }
-		
+        switchSearch(DIGITS_SEARCH);
 	}
 	
     private void switchSearch(String searchName) {
