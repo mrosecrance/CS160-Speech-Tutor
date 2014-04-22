@@ -199,6 +199,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
                          AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, 44100, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT, intSize, AudioTrack.MODE_STREAM);
                          playing = audioTrack;
+                         playing.setPlaybackRate(16000);
 		                 playing.play();
 		                 playing.write(music, 0, musicLength);
 		                 Message msg = threadHandler.obtainMessage();
