@@ -11,5 +11,7 @@
     <string name="nav_record">Record</string>
     <string name="nav_playback">Listen</string>
     <string name="nav_settings">Settings</string>
+    <string name="title_activity_statistics">Statistics</string>
+    <string name="title_activity_settings">Settings</string>
 
 </resources>

@@ -1,0 +1,133 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="#00a0b0"
+    tools:context=".Statistics" >
+        
+    
+    
+      <include
+        android:id="@+id/nav_bar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        layout="@layout/nav_bar" />
+
+      <TextView
+          android:id="@+id/Overall"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignLeft="@+id/nav_bar"
+          android:layout_alignParentTop="true"
+          android:layout_marginTop="19dp"
+          android:text="Overall:"
+          android:textAppearance="?android:attr/textAppearanceLarge" />
+
+      <TextView
+          android:id="@+id/Month"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_above="@+id/nav_bar"
+          android:layout_alignLeft="@+id/nav_bar"
+          android:layout_marginBottom="131dp"
+          android:text="In the last Month:"
+          android:textAppearance="?android:attr/textAppearanceLarge" />
+
+      <TextView
+          android:id="@+id/Week"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignLeft="@+id/Overall"
+          android:layout_below="@+id/Overall"
+          android:layout_marginTop="75dp"
+          android:text="In the last week:"
+          android:textAppearance="?android:attr/textAppearanceLarge" />
+
+      <TextView
+          android:id="@+id/mFPM"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignRight="@+id/oTotalFPM"
+          android:layout_below="@+id/Overall"
+          android:text="Total Filler words per minute: 5"
+          android:textAppearance="?android:attr/textAppearanceSmall" />
+
+      <TextView
+          android:id="@+id/wFPM"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignLeft="@+id/mSpeeches"
+          android:layout_below="@+id/Week"
+          android:text="Filler Words per Minute: 3"
+          android:textAppearance="?android:attr/textAppearanceSmall" />
+
+      <TextView
+          android:id="@+id/wFiller"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignLeft="@+id/wFPM"
+          android:layout_below="@+id/wFPM"
+          android:text="Total Filler Words: 35"
+          android:textAppearance="?android:attr/textAppearanceSmall" />
+
+      <TextView
+          android:id="@+id/wSpeeches"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignLeft="@+id/wFiller"
+          android:layout_below="@+id/wFiller"
+          android:text="Total Speeches: 4"
+          android:textAppearance="?android:attr/textAppearanceSmall" />
+
+      <TextView
+          android:id="@+id/oTotalFPM"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignLeft="@+id/Month"
+          android:layout_alignTop="@+id/Month"
+          android:layout_marginTop="27dp"
+          android:text="Total Filler Words per Minute: 8"
+          android:textAppearance="?android:attr/textAppearanceSmall" />
+
+      <TextView
+          android:id="@+id/mFiller"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignLeft="@+id/oTotalSpeech"
+          android:layout_below="@+id/oTotalSpeech"
+          android:text="Total Filler Words: 187"
+          android:textAppearance="?android:attr/textAppearanceSmall" />
+
+      <TextView
+          android:id="@+id/oTotalFiller"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignLeft="@+id/mFPM"
+          android:layout_below="@+id/mFPM"
+          android:text="Total Filler Words: 243"
+          android:textAppearance="?android:attr/textAppearanceSmall" />
+
+      <TextView
+          android:id="@+id/oTotalSpeech"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignLeft="@+id/wSpeeches"
+          android:layout_below="@+id/oTotalFPM"
+          android:text="Total Speeches: 15"
+          android:textAppearance="?android:attr/textAppearanceSmall" />
+
+      <TextView
+          android:id="@+id/mSpeeches"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignLeft="@+id/oTotalFiller"
+          android:layout_below="@+id/oTotalFiller"
+          android:text="Total speeches: 13"
+          android:textAppearance="?android:attr/textAppearanceSmall" />
+
+</RelativeLayout>
