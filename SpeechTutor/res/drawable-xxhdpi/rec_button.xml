@@ -3,7 +3,7 @@
     <selector
   xmlns:android="http://schemas.android.com/apk/res/android">
   
-    <item android:state_pressed="true" android:drawable="@drawable/rec_button_start" /> 
-    <item android:state_checked="true" android:drawable="@drawable/rec_button_stop" /> 
-    <item android:drawable="@drawable/rec_button_start" />
+    <item android:state_pressed="true" android:drawable="@drawable/record" /> 
+    <item android:state_checked="true" android:drawable="@drawable/pause" /> 
+    <item android:drawable="@drawable/record" />
 </selector>
