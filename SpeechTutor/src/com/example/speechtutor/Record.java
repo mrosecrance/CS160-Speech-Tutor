@@ -202,7 +202,10 @@ RecognitionListener {
 	public void cancelRecording(View view) {
         navBar.setVisibility(View.VISIBLE);
         finishRecordingBar.setVisibility(View.GONE);
+        recognizerButton.setChecked(false);
         recordingInProgress=false;
+        umCount=0;
+    	umCounterDisplay.setText(" "+(umCount));
         chronometer.setBase(SystemClock.elapsedRealtime());
         chronometer.start();
         chronometer.stop();
@@ -217,8 +220,9 @@ RecognitionListener {
 //		saveAudioDataToFile();
         navBar.setVisibility(View.VISIBLE);
         finishRecordingBar.setVisibility(View.GONE);
+        recognizerButton.setChecked(false);
         recordingInProgress=false;
-       
+        
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         
         alert.setTitle("Enter Recording Name");
@@ -239,6 +243,11 @@ RecognitionListener {
         });
 
          alert.show();
+        /* umCount=0;
+     	umCounterDisplay.setText(" "+(umCount));
+         chronometer.setBase(SystemClock.elapsedRealtime());
+         chronometer.start();
+         chronometer.stop();*/
 	}
 	@Override
 	public void onBeginningOfSpeech() {
