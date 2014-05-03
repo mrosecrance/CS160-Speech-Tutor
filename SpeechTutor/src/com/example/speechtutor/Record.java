@@ -222,8 +222,7 @@ RecognitionListener {
         finishRecordingBar.setVisibility(View.GONE);
         recognizerButton.setChecked(false);
         recordingInProgress=false;
-        
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
         
         alert.setTitle("Enter Recording Name");
 
@@ -239,15 +238,39 @@ RecognitionListener {
 	        from.renameTo(to);
 	        Toast.makeText(getApplicationContext(), "Audio Saved to "+ to.getPath(),
 	                   Toast.LENGTH_SHORT).show();
+	        umCount=0;
+         	umCounterDisplay.setText(" "+(umCount));
+             chronometer.setBase(SystemClock.elapsedRealtime());
+             chronometer.start();
+             chronometer.stop();
          }
         });
+        AlertDialog.Builder saveAlert = new AlertDialog.Builder(this);
+        
+        saveAlert.setTitle("Would you like to name your recording?");
 
-         alert.show();
-        /* umCount=0;
-     	umCounterDisplay.setText(" "+(umCount));
-         chronometer.setBase(SystemClock.elapsedRealtime());
-         chronometer.start();
-         chronometer.stop();*/
+        saveAlert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        public void onClick(DialogInterface dialog, int whichButton) {
+	        alert.show();
+         }
+        });
+        saveAlert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+            	Toast.makeText(getApplicationContext(), "Audio Saved to "+ filePath,
+                        Toast.LENGTH_SHORT).show();
+     	
+            	umCount=0;
+             	umCounterDisplay.setText(" "+(umCount));
+                 chronometer.setBase(SystemClock.elapsedRealtime());
+                 chronometer.start();
+                 chronometer.stop();
+            }
+          });
+         saveAlert.show();
+        
+        
+        
+        
 	}
 	@Override
 	public void onBeginningOfSpeech() {
