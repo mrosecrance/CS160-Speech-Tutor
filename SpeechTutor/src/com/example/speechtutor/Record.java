@@ -235,6 +235,12 @@ RecognitionListener {
         Editable value = input.getText();
 	        File from = new File(filePath);
 	        File to = new File(from.getParent(), value + ".pcm");
+	        int count = 1;
+	        while(to.exists()){
+	        	to = new File(from.getParent(),value + "(" + Integer.toString(count)+")"+".pcm");
+	        	count++;
+	        }
+	        
 	        from.renameTo(to);
 	        Toast.makeText(getApplicationContext(), "Audio Saved to "+ to.getPath(),
 	                   Toast.LENGTH_SHORT).show();

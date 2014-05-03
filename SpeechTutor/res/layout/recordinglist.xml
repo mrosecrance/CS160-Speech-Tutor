@@ -4,10 +4,47 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="10dp" >
- 
+  <RelativeLayout 
+        android:id="@+id/recordingDetails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
     <TextView
+        android:textSize="18sp"
         android:id="@+id/recording"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="25dp"/>
+    <TextView
+        android:layout_below="@id/recording"
+        android:textSize="14sp"
+        android:id="@+id/time"
+        android:textColor="#6f6f6f"
+        android:layout_alignParentRight="true"
+        android:text="1:05"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="10dp"/>
+    
+    <TextView
+        android:layout_below="@id/recording"
+        android:layout_alignParentLeft="true"
+        android:textSize="14sp"
+        android:id="@+id/ums"
+        android:textColor="#6f6f6f"
+        android:text="8"
+        android:paddingLeft="25dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+    <TextView
+        android:layout_below="@id/recording"
+        android:layout_toRightOf="@id/ums"
+        android:textSize="14sp"
+        android:id="@+id/umLabel"
+        android:textColor="#6f6f6f"
+        android:text=" Filler Words"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+    </RelativeLayout>
 </LinearLayout>

@@ -1,10 +1,7 @@
 package com.example.speechtutor;
  
-import java.io.BufferedInputStream;
-import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -12,7 +9,6 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
@@ -28,6 +24,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -41,7 +38,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private ExpandableListView view;
     private AudioTrack playing;
     ToggleButton playback;
-    
+    private int position;
     public ExpandableListAdapter(Context context, List<String> listDataHeader,
             HashMap<String, List<String>> listChildData) {
         this._context = context;
@@ -53,6 +50,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
       		synchronized(this){
 	      	    if(msg.what==1){
 	      	    	playback.setChecked(false);
+	      	    	position = 0;
 	      	    }
 	      	    super.handleMessage(msg);
 	      	  }
@@ -105,11 +103,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         }
         if (playback != null){
         	playback.setChecked(false);
+        	position = 0;
         }
         TextView txtListChild = (TextView) convertView
                 .findViewById(R.id.recordingPlayback);
         
-        ImageButton delete = (ImageButton) convertView
+        ImageView delete = (ImageView) convertView
                 .findViewById(R.id.delete);
         
         playback = (ToggleButton) convertView
@@ -147,6 +146,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 		        }else{
 		        	//TODO: STOP RECORDING
 		        	if(playing != null){
+		        		position = playing.getPlaybackHeadPosition();
 		        		playing.flush();
 			        	playing.stop();
 			        	playing.release();
@@ -156,7 +156,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 		    }
 		        });
 		
-		ImageButton share_button = (ImageButton)convertView.findViewById(R.id.share);
+		ImageView share_button = (ImageView)convertView.findViewById(R.id.share);
 		share_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -202,6 +202,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                          playing.setPlaybackRate(16000);
 		                 playing.play();
 		                 playing.write(music, 0, musicLength);
+		                 System.out.println(position);
+		                 if(position != 0){
+		                	 playing.setPlaybackHeadPosition(position);
+		                 }
 		                 Message msg = threadHandler.obtainMessage();
 						 msg.what = 1;
 						 threadHandler.sendMessage(msg);
@@ -244,7 +248,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
  
         TextView lblListHeader = (TextView) convertView
                 .findViewById(R.id.recording);
-        lblListHeader.setTypeface(null, Typeface.BOLD);
+        //lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);
  
         return convertView;

@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:padding="10dp" 
-    android:background="#99d9df"
+    android:background="#d9d9d9"
     >
  
     <TextView
@@ -14,10 +14,10 @@
         android:layout_centerVertical="true"
         android:paddingLeft="25dp" />
     
-    <SeekBar android:id="@+id/playbackSeeker"
+    <!-- <SeekBar android:id="@+id/playbackSeeker"
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
-          />
+          /> -->
 	<LinearLayout 
 	android:gravity="center_horizontal"
     android:layout_width="fill_parent"
@@ -25,15 +25,15 @@
     android:layout_height="wrap_content"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:orientation="horizontal"
-    android:layout_below="@id/playbackSeeker">
-         <ImageButton
+    android:orientation="horizontal">
+    <!--  android:layout_below="@id/playbackSeeker"-->
+         <ImageView
         android:id="@+id/beginning"
-        android:paddingLeft="10dp" 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_action_fast_forward"
-        android:rotation="180"
+        android:paddingRight="10dp" 
+		android:layout_marginTop="-5dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_action_previous"
         android:background="@null"/>
 	    <ToggleButton
         android:id="@+id/playback"
@@ -41,39 +41,40 @@
         android:paddingLeft="10dp" 
         android:textOn=""
         android:textOff=""
-
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:background="@drawable/playlist_play"/>
-	    <ImageButton
+	    <ImageView
         android:id="@+id/end"
         android:paddingLeft="10dp" 
-        
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_action_fast_forward"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+		android:layout_marginTop="-5dp"
+        android:src="@drawable/ic_action_next"
         android:background="@null"/>
 	    
 	</LinearLayout>
  
-    <ImageButton
+    <ImageView
         android:id="@+id/delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@id/playControls"
         android:src="@drawable/ic_action_delete"
         android:background="@null"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="-40dp"
         android:paddingRight="30dp"
-        android:scaleType="fitCenter"
+
         />
     
-     <ImageButton
+     <ImageView
         android:id="@+id/share"
-        android:scaleType="fitCenter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+
         android:layout_alignParentLeft="true"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="-40dp"
         android:layout_below="@id/playControls"
         android:src="@drawable/ic_action_share"
         android:paddingLeft="30dp"
