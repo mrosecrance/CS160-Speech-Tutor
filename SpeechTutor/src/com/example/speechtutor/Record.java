@@ -2,8 +2,7 @@ package com.example.speechtutor;
 
 import static edu.cmu.pocketsphinx.Assets.syncAssets;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Environment;
 import android.os.SystemClock;
 import android.text.Editable;
 import android.util.Log;
@@ -28,9 +28,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 import edu.cmu.pocketsphinx.Hypothesis;
 import edu.cmu.pocketsphinx.RecognitionListener;
-//import android.speech.RecognitionListener;
-//import android.speech.RecognizerIntent;
-//import android.speech.SpeechRecognizer;
+
 
 public class Record extends Activity implements
 RecognitionListener {
@@ -218,13 +216,15 @@ RecognitionListener {
 
 	public void saveRecording(View view) {
 //		saveAudioDataToFile();
+        Log.d("Record", "SaveRecording method reached: ");
+
         navBar.setVisibility(View.VISIBLE);
         finishRecordingBar.setVisibility(View.GONE);
         recognizerButton.setChecked(false);
         recordingInProgress=false;
         final AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        
-        alert.setTitle("Enter Recording Name");
+        System.out.println("here we are");
+        alert.setTitle("Enter Recording Name NOW");
 
         // Set an EditText view to get user input 
         final EditText input = new EditText(this);
@@ -244,11 +244,61 @@ RecognitionListener {
 	        from.renameTo(to);
 	        Toast.makeText(getApplicationContext(), "Audio Saved to "+ to.getPath(),
 	                   Toast.LENGTH_SHORT).show();
+	        Integer umCountToSave = umCount;
 	        umCount=0;
          	umCounterDisplay.setText(" "+(umCount));
              chronometer.setBase(SystemClock.elapsedRealtime());
              chronometer.start();
              chronometer.stop();
+             // Get fillerword data
+             RecordingData recordingData = null;
+             try
+             {
+            	 File hiddenStorageDir = new File(Environment.getExternalStorageDirectory(), "SpeechTutor/.storage");
+            	 if (! hiddenStorageDir.exists()){
+            		 if (! hiddenStorageDir.mkdirs()){
+            			 Log.d("SpeechTutor", "failed to create directory");
+            		 }
+            	 }                          
+            	 FileInputStream fileIn = new FileInputStream(hiddenStorageDir.getPath() + "/SpeechTutorData.ser");
+            	 ObjectInputStream in = new ObjectInputStream(fileIn);
+                recordingData = (RecordingData) in.readObject();
+                in.close();
+                fileIn.close();
+             }catch(IOException i)
+             {
+             //   i.printStackTrace();
+             }catch(ClassNotFoundException c)
+             {
+                c.printStackTrace();
+             }
+             //write fillerword data
+             if (recordingData == null) {
+            	 recordingData = new RecordingData();
+             }
+             recordingData.recordingFillerWordCount.put(value.toString()+".pcm",umCountToSave);
+             try
+             {
+               	File hiddenStorageDir = new File(Environment.getExternalStorageDirectory(), "SpeechTutor/.storage");
+    	        if (! hiddenStorageDir.exists()){
+    	            if (! hiddenStorageDir.mkdirs()){
+    	                Log.d("SpeechTutor", "failed to create directory");
+    	            }
+    	        }                 
+                FileOutputStream fileOut =
+                new FileOutputStream(hiddenStorageDir.getPath() + "/SpeechTutorData.ser", false);
+                ObjectOutputStream out = new ObjectOutputStream(fileOut);
+                out.writeObject(recordingData);
+                out.close();
+                fileOut.close();
+             }catch(IOException i)
+             {
+                 i.printStackTrace();
+             }
+             
+             Log.d("Record", "Number of Filler words saved"+umCountToSave);
+
+             
          }
         });
         AlertDialog.Builder saveAlert = new AlertDialog.Builder(this);

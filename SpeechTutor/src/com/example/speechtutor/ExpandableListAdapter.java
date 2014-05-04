@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,7 +25,6 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -250,7 +251,47 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 .findViewById(R.id.recording);
         //lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);
- 
+        // set filler word count
+        RecordingData recordingData = null;
+        try
+        {
+        	File hiddenStorageDir = new File(Environment.getExternalStorageDirectory(), "SpeechTutor/.storage");
+	        if (! hiddenStorageDir.exists()){
+	            if (! hiddenStorageDir.mkdirs()){
+	                Log.d("SpeechTutor", "failed to create directory");
+	            }
+	        }
+           FileInputStream fileIn = new FileInputStream(hiddenStorageDir.getPath() + "/SpeechTutorData.ser");
+           ObjectInputStream in = new ObjectInputStream(fileIn);
+           recordingData = (RecordingData) in.readObject();
+           in.close();
+           fileIn.close();
+        }catch(IOException i)
+        {
+           i.printStackTrace();
+        }catch(ClassNotFoundException c)
+        {
+           System.out.println("RecordingData class not found");
+           c.printStackTrace();
+        }
+        TextView lblListFillerWordCount = (TextView) convertView
+                .findViewById(R.id.ums);
+
+        if (recordingData != null) {
+    		String writeOut = ((TextView) convertView
+                    .findViewById(R.id.recording)).getText().toString();
+        	
+
+        	if(recordingData.recordingFillerWordCount.containsKey(writeOut)){
+        		Integer tmpStr = recordingData.recordingFillerWordCount.get(writeOut);
+        		lblListFillerWordCount.setText(tmpStr.toString());
+        	}
+        }
+        else {
+            lblListFillerWordCount.setText("78");
+
+        }
+        
         return convertView;
     }
  
