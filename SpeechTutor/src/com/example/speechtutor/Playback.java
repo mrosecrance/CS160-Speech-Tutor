@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnGroupExpandListener;
@@ -68,10 +67,13 @@ public class Playback extends Activity {
 	        return null;
 	    else {
 	        for (int i=0; i<files.length; i++) {
-	            MyFiles.add(files[i].getName());
-	        	List<String> accordion = new ArrayList<String>();
-	        	accordion.add(" ");
-	        	listDataChild.put(files[i].getName(),accordion);
+	        	String extension = files[i].getName().substring(files[i].getName().indexOf("."));
+	        	if(extension.equals(".pcm")){
+			        MyFiles.add(files[i].getName());
+			        List<String> accordion = new ArrayList<String>();
+			        accordion.add(" ");
+			        listDataChild.put(files[i].getName(),accordion);
+	        	}
 	        }
 	    }
 
