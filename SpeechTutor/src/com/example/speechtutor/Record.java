@@ -2,7 +2,13 @@ package com.example.speechtutor;
 
 import static edu.cmu.pocketsphinx.Assets.syncAssets;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,6 +58,7 @@ RecognitionListener {
 	RelativeLayout finishRecordingBar = null;
 	TextView umCounterDisplay;
     private String TAG = "record";
+    
     
     
 	private File appDir;
@@ -247,57 +254,12 @@ RecognitionListener {
 	        Integer umCountToSave = umCount;
 	        umCount=0;
          	umCounterDisplay.setText(" "+(umCount));
+         	String time = (String) chronometer.getText();
+         	 saveRecordingData(value.toString()+".pcm",time,umCountToSave);
              chronometer.setBase(SystemClock.elapsedRealtime());
              chronometer.start();
              chronometer.stop();
-             // Get fillerword data
-             RecordingData recordingData = null;
-             try
-             {
-            	 File hiddenStorageDir = new File(Environment.getExternalStorageDirectory(), "SpeechTutor/.storage");
-            	 if (! hiddenStorageDir.exists()){
-            		 if (! hiddenStorageDir.mkdirs()){
-            			 Log.d("SpeechTutor", "failed to create directory");
-            		 }
-            	 }                          
-            	 FileInputStream fileIn = new FileInputStream(hiddenStorageDir.getPath() + "/SpeechTutorData.ser");
-            	 ObjectInputStream in = new ObjectInputStream(fileIn);
-                recordingData = (RecordingData) in.readObject();
-                in.close();
-                fileIn.close();
-             }catch(IOException i)
-             {
-             //   i.printStackTrace();
-             }catch(ClassNotFoundException c)
-             {
-                c.printStackTrace();
-             }
-             //write fillerword data
-             if (recordingData == null) {
-            	 recordingData = new RecordingData();
-             }
-             recordingData.recordingFillerWordCount.put(value.toString()+".pcm",umCountToSave);
-             try
-             {
-               	File hiddenStorageDir = new File(Environment.getExternalStorageDirectory(), "SpeechTutor/.storage");
-    	        if (! hiddenStorageDir.exists()){
-    	            if (! hiddenStorageDir.mkdirs()){
-    	                Log.d("SpeechTutor", "failed to create directory");
-    	            }
-    	        }                 
-                FileOutputStream fileOut =
-                new FileOutputStream(hiddenStorageDir.getPath() + "/SpeechTutorData.ser", false);
-                ObjectOutputStream out = new ObjectOutputStream(fileOut);
-                out.writeObject(recordingData);
-                out.close();
-                fileOut.close();
-             }catch(IOException i)
-             {
-                 i.printStackTrace();
-             }
              
-             Log.d("Record", "Number of Filler words saved"+umCountToSave);
-
              
          }
         });
@@ -314,7 +276,10 @@ RecognitionListener {
             public void onClick(DialogInterface dialog, int whichButton) {
             	Toast.makeText(getApplicationContext(), "Audio Saved to "+ filePath,
                         Toast.LENGTH_SHORT).show();
-     	
+            	File from = new File(filePath);
+            	Integer umCountToSave = umCount;
+            	String time = (String) chronometer.getText();
+            	 saveRecordingData(from.getName(),time,umCountToSave);
             	umCount=0;
              	umCounterDisplay.setText(" "+(umCount));
                  chronometer.setBase(SystemClock.elapsedRealtime());
@@ -328,6 +293,59 @@ RecognitionListener {
         
         
 	}
+	
+	public void saveRecordingData(String recordingName, String time, int umCountToSave){
+		// Get fillerword data
+        RecordingData recordingData = null;
+        try
+        {
+       	 File hiddenStorageDir = new File(Environment.getExternalStorageDirectory(), "SpeechTutor/.storage");
+       	 if (! hiddenStorageDir.exists()){
+       		 if (! hiddenStorageDir.mkdirs()){
+       			 Log.d("SpeechTutor", "failed to create directory");
+       		 }
+       	 }                          
+       	 FileInputStream fileIn = new FileInputStream(hiddenStorageDir.getPath() + "/SpeechTutorData.ser");
+       	 ObjectInputStream in = new ObjectInputStream(fileIn);
+           recordingData = (RecordingData) in.readObject();
+           in.close();
+           fileIn.close();
+        }catch(IOException i)
+        {
+        //   i.printStackTrace();
+        }catch(ClassNotFoundException c)
+        {
+           c.printStackTrace();
+        }
+        //write fillerword data
+        if (recordingData == null) {
+       	 recordingData = new RecordingData();
+        }
+        recordingData.recordingFillerWordCount.put(recordingName,umCountToSave);
+        recordingData.recordingTime.put(recordingName,time);
+        try
+        {
+          	File hiddenStorageDir = new File(Environment.getExternalStorageDirectory(), "SpeechTutor/.storage");
+	        if (! hiddenStorageDir.exists()){
+	            if (! hiddenStorageDir.mkdirs()){
+	                Log.d("SpeechTutor", "failed to create directory");
+	            }
+	        }                 
+           FileOutputStream fileOut =
+           new FileOutputStream(hiddenStorageDir.getPath() + "/SpeechTutorData.ser", false);
+           ObjectOutputStream out = new ObjectOutputStream(fileOut);
+           out.writeObject(recordingData);
+           out.close();
+           fileOut.close();
+        }catch(IOException i)
+        {
+            i.printStackTrace();
+        }
+        
+        Log.d("Record", "Number of Filler words saved"+umCountToSave);
+
+	}
+	
 	@Override
 	public void onBeginningOfSpeech() {
 		// TODO Auto-generated method stub

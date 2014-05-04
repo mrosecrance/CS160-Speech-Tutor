@@ -10,6 +10,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
@@ -26,6 +27,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.CompoundButton;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -93,7 +95,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, final int childPosition,
             boolean isLastChild, View convertView, ViewGroup parent) {
- 
+    	
         final String childText = (String) getChild(groupPosition, childPosition);
         final String groupText = (String) getGroup(groupPosition);
         final int pos = groupPosition;
@@ -249,6 +251,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
  
         TextView lblListHeader = (TextView) convertView
                 .findViewById(R.id.recording);
+        
         //lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);
         // set filler word count
@@ -276,6 +279,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         }
         TextView lblListFillerWordCount = (TextView) convertView
                 .findViewById(R.id.ums);
+        TextView lblListTime = (TextView) convertView.findViewById(R.id.time);
 
         if (recordingData != null) {
     		String writeOut = ((TextView) convertView
@@ -285,6 +289,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         	if(recordingData.recordingFillerWordCount.containsKey(writeOut)){
         		Integer tmpStr = recordingData.recordingFillerWordCount.get(writeOut);
         		lblListFillerWordCount.setText(tmpStr.toString());
+        	}
+        	if(recordingData.recordingTime.containsKey(writeOut)){
+        	
+            		lblListTime.setText(recordingData.recordingTime.get(writeOut));
+        		
+        		
         	}
         }
         else {
