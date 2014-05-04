@@ -290,11 +290,14 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         		Integer tmpStr = recordingData.recordingFillerWordCount.get(writeOut);
         		lblListFillerWordCount.setText(tmpStr.toString());
         	}
-        	if(recordingData.recordingTime.containsKey(writeOut)){
         	
-            		lblListTime.setText(recordingData.recordingTime.get(writeOut));
-        		
-        		
+        	if(recordingData.recordingTime != null){
+	        	if(recordingData.recordingTime.containsKey(writeOut)){
+	        	
+	            		lblListTime.setText(recordingData.recordingTime.get(writeOut));
+	        		
+	        		
+	        	}
         	}
         }
         else {
