@@ -6,6 +6,9 @@
     
     android:background="#d9d9d9"
     tools:context=".Settings" >
+    <ListView android:id="@android:id/list"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent" />
 	  <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
@@ -18,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         layout="@layout/nav_bar" />
-
+<!--
      <LinearLayout
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
@@ -70,6 +73,6 @@
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:text="You Know" />
-     </LinearLayout>
+     </LinearLayout>-->
 
 </RelativeLayout>

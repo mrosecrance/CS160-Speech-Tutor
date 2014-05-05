@@ -8,7 +8,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,10 +15,15 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.SystemClock;
+import android.preference.ListPreference;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.util.Log;
 import android.view.Menu;
@@ -37,7 +41,7 @@ import edu.cmu.pocketsphinx.RecognitionListener;
 
 
 public class Record extends Activity implements
-RecognitionListener {
+RecognitionListener,OnSharedPreferenceChangeListener  {
 
 	//SpeechRecognizerRecorder mSpeechRecognizer;
 	CountDownTimer mtimer;
@@ -70,19 +74,24 @@ RecognitionListener {
     private static final String KEYPHRASE = "um";
     private static final Map<String, Boolean> FILLER_WORDS = new HashMap<String, Boolean>();
 
-	
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
+        SharedPreferences sharedPrefs = PreferenceManager
+                .getDefaultSharedPreferences(this);
+        sharedPrefs.registerOnSharedPreferenceChangeListener(this);
         
-        FILLER_WORDS.put("uh", true);
+        FILLER_WORDS.put("uh", sharedPrefs.getBoolean("detectUh", true));
         FILLER_WORDS.put("uhh", false);
-        FILLER_WORDS.put("um", true);
+        FILLER_WORDS.put("um", sharedPrefs.getBoolean("detectUm", true));
         FILLER_WORDS.put("umm", false);
-        //FILLER_WORDS.put("er", true);
-        //FILLER_WORDS.put("err", false);
-        FILLER_WORDS.put("ah", true);
+        FILLER_WORDS.put("er", sharedPrefs.getBoolean("detectEr", true));
+        FILLER_WORDS.put("err", false);
+        FILLER_WORDS.put("ah", sharedPrefs.getBoolean("detectAh", true));
+        FILLER_WORDS.put("you know", sharedPrefs.getBoolean("detectyknow", false));
+        FILLER_WORDS.put("like", sharedPrefs.getBoolean("detectLike", false));
 
 		try {
 			Log.d(TAG,"before trying to sync assets");
@@ -183,6 +192,23 @@ RecognitionListener {
 		getMenuInflater().inflate(R.menu.record, menu);
 		return true;
 	}
+	@Override
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+		
+    	if(key == "detectUh"){
+    		 FILLER_WORDS.put("uh", sharedPreferences.getBoolean("detectUh", true));
+    	}else if(key == "detectUm"){
+    		FILLER_WORDS.put("um", sharedPreferences.getBoolean("detectUm", true));
+    	}else if(key == "detectEr"){
+    		FILLER_WORDS.put("er", sharedPreferences.getBoolean("detectEr", true));
+    	}else if(key == "detectAh"){
+    		FILLER_WORDS.put("ah", sharedPreferences.getBoolean("detectAh", true));
+    	}else if(key == "detectLike"){
+    		FILLER_WORDS.put("like", sharedPreferences.getBoolean("detectLike", false));
+    	}else{
+    		FILLER_WORDS.put("you know", sharedPreferences.getBoolean("detectyknow", false));
+    	}
+    }
 	
 	public void navigate(View view) {
 		Class classToStart = null;
@@ -365,6 +391,7 @@ RecognitionListener {
 		String[] splitText = hypothesis.getHypstr().split(" ");
 		String text = splitText[splitText.length-1];
         Log.d(getClass().getSimpleName(), "on partial: " + text);
+        Log.d(getClass().getSimpleName(), "on partial: " + FILLER_WORDS.get(text));
         if (FILLER_WORDS.containsKey(text) && FILLER_WORDS.get(text)) {
         	Log.d(TAG, "Match: "+text);
         	umCount++;
