@@ -194,16 +194,16 @@ RecognitionListener,OnSharedPreferenceChangeListener  {
 	}
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-		
-    	if(key == "detectUh"){
+    	if(key.equals("detectUh")){
+    		
     		 FILLER_WORDS.put("uh", sharedPreferences.getBoolean("detectUh", true));
-    	}else if(key == "detectUm"){
+    	}else if(key.equals("detectUm")){
     		FILLER_WORDS.put("um", sharedPreferences.getBoolean("detectUm", true));
-    	}else if(key == "detectEr"){
+    	}else if(key.equals("detectEr")){
     		FILLER_WORDS.put("er", sharedPreferences.getBoolean("detectEr", true));
-    	}else if(key == "detectAh"){
+    	}else if(key.equals("detectAh")){
     		FILLER_WORDS.put("ah", sharedPreferences.getBoolean("detectAh", true));
-    	}else if(key == "detectLike"){
+    	}else if(key.equals("detectLike")){
     		FILLER_WORDS.put("like", sharedPreferences.getBoolean("detectLike", false));
     	}else{
     		FILLER_WORDS.put("you know", sharedPreferences.getBoolean("detectyknow", false));
