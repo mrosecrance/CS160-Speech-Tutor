@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="graphs_array">
+        <item>Total Filler Words per Recording</item>
+        <item>Filler Words per Second</item>
+        <item>More coming soon!</item>
+    </string-array>
+</resources>

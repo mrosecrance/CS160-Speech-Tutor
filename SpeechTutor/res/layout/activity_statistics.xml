@@ -4,11 +4,16 @@
     android:layout_height="match_parent"
     android:background="#d9d9d9"
     tools:context=".Statistics" >
+    <Spinner
+    android:id="@+id/graphSpinner"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" />
         <LinearLayout
             android:orientation="horizontal"
+            android:layout_below="@id/graphSpinner"
             android:id="@+id/graph"
           android:layout_width="wrap_content"
-          android:layout_height="wrap_content" 
+          android:layout_height="350dp" 
           android:paddingLeft="@dimen/activity_horizontal_margin"
     	  android:paddingRight="@dimen/activity_horizontal_margin"
     	  android:paddingTop="@dimen/activity_vertical_margin">
@@ -26,7 +31,7 @@
         android:layout_alignParentBottom="true"
         layout="@layout/nav_bar" />
 
-      <RelativeLayout
+      <!--<RelativeLayout
           android:layout_width="wrap_content"
           android:layout_height="wrap_content" 
           android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -120,6 +125,6 @@
               android:layout_height="wrap_content"
               android:text="Total speeches: 13"
               android:textAppearance="?android:attr/textAppearanceSmall" />
-      </RelativeLayout>
+      </RelativeLayout>-->
 
 </RelativeLayout>

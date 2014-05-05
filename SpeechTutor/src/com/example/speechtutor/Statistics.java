@@ -5,32 +5,56 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.Comparator;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GraphView.GraphViewData;
 import com.jjoe64.graphview.GraphViewSeries;
+import com.jjoe64.graphview.GraphViewSeries.GraphViewSeriesStyle;
+import com.jjoe64.graphview.GraphViewStyle;
 import com.jjoe64.graphview.LineGraphView;
 
-public class Statistics extends Activity {
+public class Statistics extends Activity implements OnItemSelectedListener {
+	private GraphView currentGraph;
+	private Spinner graphSpinner;
+	private ArrayList<String> FilesInFolder;
+	private RecordingData recordingData;
+	@Override
+    protected void onResume() {
 
+       super.onResume();
+       this.onCreate(null);
+    }
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_statistics);
 		
-		ArrayList<String> FilesInFolder = GetFiles(Environment.getExternalStorageDirectory()+"/SpeechTutor");
+		graphSpinner = (Spinner) findViewById(R.id.graphSpinner);
+		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+		        R.array.graphs_array, android.R.layout.simple_spinner_item);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		graphSpinner.setAdapter(adapter);
+		graphSpinner.setOnItemSelectedListener((OnItemSelectedListener) this);
 		
-		RecordingData recordingData = null;
+		FilesInFolder = GetFiles(Environment.getExternalStorageDirectory()+"/SpeechTutor");
+		
+		recordingData = null;
         try
         {
         	File hiddenStorageDir = new File(Environment.getExternalStorageDirectory(), "SpeechTutor/.storage");
@@ -52,24 +76,115 @@ public class Statistics extends Activity {
            System.out.println("RecordingData class not found");
            c.printStackTrace();
         }
+       makeTotalFillerWords();
 		
-        ArrayList<String> sortedFiles = sortByTime(FilesInFolder,recordingData);
-        
-		GraphViewSeries exampleSeries = new GraphViewSeries(new GraphViewData[] {
-			    new GraphViewData(1, 2.0d)
-			    , new GraphViewData(2, 1.5d)
-			    , new GraphViewData(3, 2.5d)
-			    , new GraphViewData(4, 1.0d)
-			});
-			 
-			GraphView graphView = new LineGraphView(
-			    this // context
-			    , "GraphViewDemo" // heading
-			);
-			graphView.addSeries(exampleSeries); // data
-			 
-			LinearLayout layout = (LinearLayout) findViewById(R.id.graph);
-			layout.addView(graphView);
+	}
+	public void makeFillersPerSecond(){
+		 GraphViewData[] data;
+	        String[] recordingNames;
+	        int maxValue = 0 ;
+	        if(FilesInFolder.size() == 0){
+	        	 data = new GraphViewData[1];
+	        	 recordingNames = new String[1];
+	        	data[0] = new GraphViewData(1,0);
+	        	recordingNames[0] = "";
+	            maxValue = 1;
+	        }else{
+				data = new GraphViewData[FilesInFolder.size()];
+				recordingNames = new String[(FilesInFolder.size())];
+				for(int i = 0; i < FilesInFolder.size(); i++){
+					String time = recordingData.recordingTime.get(FilesInFolder.get(i));
+					int minutes = Integer.parseInt(time.substring(0,2));
+					int seconds = Integer.parseInt(time.substring(3,5));
+					float num = minutes*60+seconds; 
+					data[i] = new GraphViewData(i+1, recordingData.recordingFillerWordCount.get(FilesInFolder.get(i))/num);
+					recordingNames[i] = FilesInFolder.get(i).substring(0,FilesInFolder.get(i).length()-4);
+					if(recordingNames[i].length() > 2){
+						recordingNames[i] = recordingNames[i].substring(0,2)+"...";
+					}
+					if(recordingData.recordingFillerWordCount.get(FilesInFolder.get(i)) > maxValue){
+						maxValue = recordingData.recordingFillerWordCount.get(FilesInFolder.get(i));
+					}
+				}
+		        
+	        }
+	        makeGraph(data,recordingNames, "Filler Words Per Second", maxValue,false,Color.parseColor("#63ce7c"),Color.argb(100,157, 224, 173));
+	}
+	public void makeTotalFillerWords(){
+		 GraphViewData[] data;
+	        String[] recordingNames;
+	        int maxValue = 0 ;
+	        if(FilesInFolder.size() == 0){
+	        	 data = new GraphViewData[1];
+	        	 recordingNames = new String[1];
+	        	data[0] = new GraphViewData(1,0);
+	        	recordingNames[0] = "";
+	            maxValue = 1;
+	        }else{
+				data = new GraphViewData[FilesInFolder.size()];
+				recordingNames = new String[(FilesInFolder.size())];
+				for(int i = 0; i < FilesInFolder.size(); i++){
+					data[i] = new GraphViewData(i+1, recordingData.recordingFillerWordCount.get(FilesInFolder.get(i)));
+					recordingNames[i] = FilesInFolder.get(i).substring(0,FilesInFolder.get(i).length()-4);
+					if(recordingNames[i].length() > 2){
+						recordingNames[i] = recordingNames[i].substring(0,2)+"...";
+					}
+					if(recordingData.recordingFillerWordCount.get(FilesInFolder.get(i)) > maxValue){
+						maxValue = recordingData.recordingFillerWordCount.get(FilesInFolder.get(i));
+					}
+				}
+		        
+	        }
+	        makeGraph(data,recordingNames, "Total Number of Filler Words Per Recording", maxValue,true,Color.parseColor("#45ada8"),Color.argb(100,118, 200, 196));
+	}
+	
+	public void makeGraph(GraphViewData[] data, String[] recordingNames, String title, int maxValue, boolean integerize, int color1, int color2){
+		GraphViewSeries numFillers = new GraphViewSeries("Number of Fillers",new GraphViewSeriesStyle(color1, 3),data);
+		 
+		GraphView graphView = new LineGraphView(
+		    this // context
+		    , title // heading
+		);
+		graphView.addSeries(numFillers); // data
+		graphView.setScrollable(true);
+		//graphView.setScalable(true);
+		
+		if(data.length > 10){
+			graphView.setViewPort(data.length-10, 10);
+		}
+		
+		
+		((LineGraphView) graphView).setDrawBackground(true);
+		((LineGraphView) graphView).setBackgroundColor(color2);
+		graphView.setHorizontalLabels(recordingNames);
+		graphView.setGraphViewStyle(new GraphViewStyle(Color.DKGRAY, Color.DKGRAY, Color.LTGRAY));
+		graphView.getGraphViewStyle().setNumHorizontalLabels(4);
+
+		graphView.getGraphViewStyle().setTextSize(40);
+		if(integerize){
+		  
+				  int interval;
+				  if (maxValue <= 15) {
+				      interval = 1; // increment of 5 between each label
+				  } else if (maxValue <= 50) {
+				      interval = 5; // increment of 10 between each label
+				  } else {
+				      interval = 10; // increment of 20 between each label
+				  }
+				  // search the top value of your graph, it must be a multiplier of your interval
+				  int maxLabel = maxValue;
+				  while (maxLabel % interval != 0) {
+				      maxLabel++;
+				  }
+				  // set manual bounds
+				  graphView.setManualYAxisBounds(maxLabel, 0);
+				  // indicate number of vertical labels
+				  graphView.getGraphViewStyle().setNumVerticalLabels(maxLabel / interval + 1);
+		}
+		graphView.getGraphViewStyle().setVerticalLabelsWidth(100);
+		LinearLayout layout = (LinearLayout) findViewById(R.id.graph);
+		currentGraph = graphView;
+		layout.addView(graphView);
 	}
 	
 	public ArrayList<String> GetFiles(String DirectoryPath) {
@@ -78,6 +193,11 @@ public class Statistics extends Activity {
 
 	    f.mkdirs();
 	    File[] files = f.listFiles();
+	    Arrays.sort(files, new Comparator<File>(){
+	        public int compare(File f1, File f2)
+	        {
+	            return Long.valueOf(f1.lastModified()).compareTo(f2.lastModified());
+	        } });
 	    if (files.length == 0)
 	        return null;
 	    else {
@@ -92,18 +212,34 @@ public class Statistics extends Activity {
 	    return MyFiles;
 	}
 	
-	public ArrayList<String> sortByTime(ArrayList<String> files, RecordingData recordingData){
-		
-		return files;
-		
-	}
-	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.statistics, menu);
 		return true;
 	}
+	
+	public void onItemSelected(AdapterView<?> parent, View view, int position,
+			   long id) {
+			  graphSpinner.setSelection(position);
+			  String selState = (String) graphSpinner.getSelectedItem();
+			  System.out.println(selState);
+			  if(selState.equals("Total Filler Words per Recording")){
+				  LinearLayout layout = (LinearLayout) findViewById(R.id.graph);
+				  layout.removeView(currentGraph);
+				  makeTotalFillerWords();
+			  }else if(selState.equals("Filler Words per Second")){
+				  LinearLayout layout = (LinearLayout) findViewById(R.id.graph);
+				  layout.removeView(currentGraph);
+				  makeFillersPerSecond();
+			  }
+			 }
+
+			  @Override
+			 public void onNothingSelected(AdapterView<?> arg0) {
+			  // TODO Auto-generated method stub
+
+			  }
 	public void navigate(View view) {
 		Class classToStart = null;
 		switch(view.getId()) {
