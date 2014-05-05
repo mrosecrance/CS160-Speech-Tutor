@@ -167,7 +167,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             	final File f= new File("/sdcard/SpeechTutor/"+groupText);
             	shareIntent.setAction(Intent.ACTION_SEND);
             	shareIntent.putExtra(Intent.EXTRA_STREAM,  Uri.fromFile(f));
-            	shareIntent.setDataAndType(Uri.fromFile(f), "text/plain"); 
+            	shareIntent.setType("text/plain"); 
             	_context.startActivity(Intent.createChooser(shareIntent, "Share your Speech"));
             }
         });
