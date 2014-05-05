@@ -80,8 +80,8 @@ RecognitionListener {
         FILLER_WORDS.put("uhh", false);
         FILLER_WORDS.put("um", true);
         FILLER_WORDS.put("umm", false);
-        FILLER_WORDS.put("er", true);
-        FILLER_WORDS.put("err", false);
+        //FILLER_WORDS.put("er", true);
+        //FILLER_WORDS.put("err", false);
         FILLER_WORDS.put("ah", true);
 
 		try {
@@ -97,7 +97,7 @@ RecognitionListener {
                 .setAcousticModel(new File(appDir, "models/hmm/en-us-semi"))
                 .setDictionary(new File(appDir, "models/lm/cmu07a.dic"))
                 .setRawLogDir(appDir)
-                .setKeywordThreshold(1e-5f)
+                .setKeywordThreshold(200)
                 .setAudioStorageDirectory("SpeechTutor")
                 .getRecognizer();
         
@@ -107,15 +107,16 @@ RecognitionListener {
 
         recognizer.addListener(this);
         // Create keyword-activation search.
-        recognizer.addKeywordSearch(KWS_SEARCH_NAME, KEYPHRASE);
+        File fillers = new File(appDir, "models/grammar/menu.gram");
+        recognizer.addKeywordSearch(KWS_SEARCH_NAME, fillers.getPath());
         // Create grammar-based searches.
-        File menuGrammar = new File(appDir, "models/grammar/menu.gram");
-        recognizer.addGrammarSearch(MENU_SEARCH, menuGrammar);
+        //File menuGrammar = new File(appDir, "models/grammar/menu.gram");
+        //recognizer.addGrammarSearch(MENU_SEARCH, menuGrammar);
         File digitsGrammar = new File(appDir, "models/grammar/digits.gram");
         recognizer.addGrammarSearch(DIGITS_SEARCH, digitsGrammar);
         // Create language model search.
-        File languageModel = new File(appDir, "models/lm/weather.dmp");
-        recognizer.addNgramSearch(FORECAST_SEARCH, languageModel);
+        //digitsGrammar.File languageModel = new File(appDir, "models/lm/weather.dmp");
+        //recognizer.addNgramSearch(FORECAST_SEARCH, languageModel);
 
 
         Log.d(TAG,"addlistener this");
@@ -146,7 +147,7 @@ RecognitionListener {
         				filePath = recognizer.getAudioStorageFilePath();
         			}
                     Log.d(TAG,"inside if isChecked");
-                    switchSearch(DIGITS_SEARCH);
+                    switchSearch(KWS_SEARCH_NAME);
                     Log.d(TAG,"startListening for ums");
 
         			isRecording = true;
@@ -362,14 +363,14 @@ RecognitionListener {
 		String[] splitText = hypothesis.getHypstr().split(" ");
 		String text = splitText[splitText.length-1];
         Log.d(getClass().getSimpleName(), "on partial: " + text);
-        if (FILLER_WORDS.get(text)) {
+        if (FILLER_WORDS.containsKey(text) && FILLER_WORDS.get(text)) {
         	Log.d(TAG, "Match: "+text);
         	umCount++;
         	umCounterDisplay.setText(" "+(umCount));
         } else {
         	Log.d(TAG, "Not match: "+text);
         }
-        switchSearch(DIGITS_SEARCH);
+        switchSearch(KWS_SEARCH_NAME);
 	}
 	
     private void switchSearch(String searchName) {
