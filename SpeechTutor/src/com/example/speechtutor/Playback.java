@@ -2,6 +2,8 @@ package com.example.speechtutor;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -63,6 +65,11 @@ public class Playback extends Activity {
 
 	    f.mkdirs();
 	    File[] files = f.listFiles();
+	    Arrays.sort(files, new Comparator<File>(){
+	        public int compare(File f1, File f2)
+	        {
+	            return Long.valueOf(f1.lastModified()).compareTo(f2.lastModified());
+	        } });
 	    if (files.length == 0)
 	        return null;
 	    else {

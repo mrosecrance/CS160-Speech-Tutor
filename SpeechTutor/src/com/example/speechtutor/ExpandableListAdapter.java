@@ -126,7 +126,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 if(deleted){
                 	_listDataHeader.remove(groupText);
                 	_listDataChild.remove(groupText);
-                	Toast.makeText(_context, "Deleted"+ groupText, Toast.LENGTH_SHORT).show();
+                	Toast.makeText(_context, "Deleted "+ groupText, Toast.LENGTH_SHORT).show();
                 	view.collapseGroup(pos);
                 	
                 	notifyDataSetChanged();
