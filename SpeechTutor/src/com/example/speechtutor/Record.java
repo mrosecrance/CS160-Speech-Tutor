@@ -244,8 +244,10 @@ RecognitionListener {
 	        File from = new File(filePath);
 	        File to = new File(from.getParent(), value + ".pcm");
 	        int count = 1;
+	        String name = value.toString();
 	        while(to.exists()){
 	        	to = new File(from.getParent(),value + "(" + Integer.toString(count)+")"+".pcm");
+	        	name = value.toString() + "(" + Integer.toString(count)+")";
 	        	count++;
 	        }
 	        
@@ -256,7 +258,7 @@ RecognitionListener {
 	        umCount=0;
          	umCounterDisplay.setText(" "+(umCount));
          	String time = (String) chronometer.getText();
-         	 saveRecordingData(value.toString()+".pcm",time,umCountToSave);
+         	 saveRecordingData(name+".pcm",time,umCountToSave);
              chronometer.setBase(SystemClock.elapsedRealtime());
              chronometer.start();
              chronometer.stop();
