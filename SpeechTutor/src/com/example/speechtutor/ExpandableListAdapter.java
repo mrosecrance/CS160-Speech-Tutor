@@ -114,6 +114,28 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         ImageView delete = (ImageView) convertView
                 .findViewById(R.id.delete);
         
+        ImageView prev = (ImageView) convertView.findViewById(R.id.beginning);
+        ImageView end = (ImageView) convertView.findViewById(R.id.end);
+        
+        prev.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+            	 playback.setChecked(false);
+                }
+            
+        });
+        
+        end.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+            	 playback.setChecked(false);
+                }
+            
+        });
+        
+       
         playback = (ToggleButton) convertView
                 .findViewById(R.id.playback);
         delete.setOnClickListener(new OnClickListener() {
@@ -133,6 +155,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 }
             }
         });
+        
+        
         
 		playback.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 		    @Override
