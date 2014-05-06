@@ -22,10 +22,6 @@
             android:key="detectLike"
        		android:title="Like"
         	android:defaultValue="false" />
-        <SwitchPreference
-            android:key="detectyknow"
-       		android:title="You Know"
-        	android:defaultValue="false" />
     </PreferenceCategory>
  
 </PreferenceScreen>

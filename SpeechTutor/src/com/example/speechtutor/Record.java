@@ -95,7 +95,7 @@ RecognitionListener,OnSharedPreferenceChangeListener  {
         FILLER_WORDS.put("er", sharedPrefs.getBoolean("detectEr", true));
         FILLER_WORDS.put("err", false);
         FILLER_WORDS.put("ah", sharedPrefs.getBoolean("detectAh", true));
-        FILLER_WORDS.put("you know", sharedPrefs.getBoolean("detectyknow", false));
+        FILLER_WORDS.put("you know",false);
         FILLER_WORDS.put("like", sharedPrefs.getBoolean("detectLike", false));
 
 		try {
@@ -214,7 +214,7 @@ RecognitionListener,OnSharedPreferenceChangeListener  {
     	}else if(key.equals("detectLike")){
     		FILLER_WORDS.put("like", sharedPreferences.getBoolean("detectLike", false));
     	}else{
-    		FILLER_WORDS.put("you know", sharedPreferences.getBoolean("detectyknow", false));
+    		FILLER_WORDS.put("you know", false);
     	}
     }
 	

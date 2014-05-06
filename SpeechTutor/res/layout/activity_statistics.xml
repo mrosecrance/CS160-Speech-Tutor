@@ -41,6 +41,7 @@
     	  android:paddingTop="@dimen/activity_vertical_margin"
     	  android:orientation="horizontal"
     	  android:visibility="gone"
+    	 
 >
           <CheckBox
               android:id="@+id/checkbox_um"
@@ -50,7 +51,7 @@
               android:checked="true"
               android:onClick="onCheckboxClicked"
               android:text="Um" />
-    	  android:gravity="center"
+    	 
     	  >
 <CheckBox android:id="@+id/checkbox_uh"
 	        android:layout_width="wrap_content"
