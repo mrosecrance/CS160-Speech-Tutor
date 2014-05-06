@@ -47,7 +47,7 @@ RecognitionListener,OnSharedPreferenceChangeListener  {
 	CountDownTimer mtimer;
 	//Button umFinderButton;
 	int partialumCount;
-	int umCount;
+	int fillerWordCount;
 	boolean umBoolean = true; 
 	ToggleButton recognizerButton;
 	SpeechRecognizerRecorder recognizer;
@@ -64,9 +64,14 @@ RecognitionListener,OnSharedPreferenceChangeListener  {
     private String TAG = "record";
     private long lastPause;
     
+    private File appDir;
+    private int umCount;
+    private int uhCount;
+    private int erCount;
+    private int ahCount;
+    private int likeCount;
+    private int youKnowCount;
     
-	private File appDir;
-
     private static final String KWS_SEARCH_NAME = "wakeup";
     private static final String FORECAST_SEARCH = "forecast";
     private static final String DIGITS_SEARCH = "digits";
@@ -240,8 +245,8 @@ RecognitionListener,OnSharedPreferenceChangeListener  {
         finishRecordingBar.setVisibility(View.GONE);
         recognizerButton.setChecked(false);
         recordingInProgress=false;
-        umCount=0;
-    	umCounterDisplay.setText(" "+(umCount));
+        fillerWordCount=0;
+    	umCounterDisplay.setText(" "+(fillerWordCount));
         chronometer.setBase(SystemClock.elapsedRealtime());
         chronometer.start();
         chronometer.stop();
@@ -271,6 +276,7 @@ RecognitionListener,OnSharedPreferenceChangeListener  {
         alert.setPositiveButton("Save", new DialogInterface.OnClickListener() {
         public void onClick(DialogInterface dialog, int whichButton) {
         Editable value = input.getText();
+        String whereToSaveFileName = value.toString()+".pcm";
 	        File from = new File(filePath);
 	        File to = new File(from.getParent(), value + ".pcm");
 	        int count = 1;
@@ -284,14 +290,20 @@ RecognitionListener,OnSharedPreferenceChangeListener  {
 	        from.renameTo(to);
 	        Toast.makeText(getApplicationContext(), "Audio Saved to "+ to.getPath(),
 	                   Toast.LENGTH_SHORT).show();
-	        Integer umCountToSave = umCount;
-	        umCount=0;
-         	umCounterDisplay.setText(" "+(umCount));
+	
+         	umCounterDisplay.setText(" "+(fillerWordCount));
          	String time = (String) chronometer.getText();
-         	 saveRecordingData(name+".pcm",time,umCountToSave);
-             chronometer.setBase(SystemClock.elapsedRealtime());
-             chronometer.start();
-             chronometer.stop();
+            saveRecordingData(whereToSaveFileName,time, fillerWordCount, umCount, uhCount, erCount, ahCount, likeCount, youKnowCount);
+            umCount = 0;
+            uhCount = 0;
+            erCount = 0;
+            ahCount = 0;
+            likeCount = 0;
+            youKnowCount = 0; 
+            fillerWordCount=0;
+            chronometer.setBase(SystemClock.elapsedRealtime());
+            chronometer.start();
+            chronometer.stop();
              
              
          }
@@ -310,14 +322,20 @@ RecognitionListener,OnSharedPreferenceChangeListener  {
             	Toast.makeText(getApplicationContext(), "Audio Saved to "+ filePath,
                         Toast.LENGTH_SHORT).show();
             	File from = new File(filePath);
-            	Integer umCountToSave = umCount;
+            	Integer umCountToSave = fillerWordCount;
             	String time = (String) chronometer.getText();
-            	 saveRecordingData(from.getName(),time,umCountToSave);
-            	umCount=0;
-             	umCounterDisplay.setText(" "+(umCount));
-                 chronometer.setBase(SystemClock.elapsedRealtime());
-                 chronometer.start();
-                 chronometer.stop();
+            	saveRecordingData(from.getName(),time, fillerWordCount, umCount, uhCount, erCount, ahCount, likeCount, youKnowCount);
+            	umCount = 0;
+            	uhCount = 0;
+            	erCount = 0;
+            	ahCount = 0;
+            	likeCount = 0;
+            	youKnowCount = 0; 
+            	fillerWordCount=0;
+            	umCounterDisplay.setText(" "+(fillerWordCount));
+            	chronometer.setBase(SystemClock.elapsedRealtime());
+            	chronometer.start();
+            	chronometer.stop();
             }
           });
          saveAlert.show();
@@ -327,57 +345,103 @@ RecognitionListener,OnSharedPreferenceChangeListener  {
         
 	}
 	
-	public void saveRecordingData(String recordingName, String time, int umCountToSave){
-		// Get fillerword data
-        RecordingData recordingData = null;
-        try
-        {
-       	 File hiddenStorageDir = new File(Environment.getExternalStorageDirectory(), "SpeechTutor/.storage");
-       	 if (! hiddenStorageDir.exists()){
-       		 if (! hiddenStorageDir.mkdirs()){
-       			 Log.d("SpeechTutor", "failed to create directory");
-       		 }
-       	 }                          
-       	 FileInputStream fileIn = new FileInputStream(hiddenStorageDir.getPath() + "/SpeechTutorData.ser");
-       	 ObjectInputStream in = new ObjectInputStream(fileIn);
-           recordingData = (RecordingData) in.readObject();
-           in.close();
-           fileIn.close();
-        }catch(IOException i)
-        {
-        //   i.printStackTrace();
-        }catch(ClassNotFoundException c)
-        {
-           c.printStackTrace();
-        }
-        //write fillerword data
-        if (recordingData == null) {
-       	 recordingData = new RecordingData();
-        }
-        recordingData.recordingFillerWordCount.put(recordingName,umCountToSave);
-        recordingData.recordingTime.put(recordingName,time);
-        try
-        {
-          	File hiddenStorageDir = new File(Environment.getExternalStorageDirectory(), "SpeechTutor/.storage");
-	        if (! hiddenStorageDir.exists()){
-	            if (! hiddenStorageDir.mkdirs()){
-	                Log.d("SpeechTutor", "failed to create directory");
-	            }
-	        }                 
-           FileOutputStream fileOut =
-           new FileOutputStream(hiddenStorageDir.getPath() + "/SpeechTutorData.ser", false);
-           ObjectOutputStream out = new ObjectOutputStream(fileOut);
-           out.writeObject(recordingData);
-           out.close();
-           fileOut.close();
-        }catch(IOException i)
-        {
-            i.printStackTrace();
-        }
-        
-        Log.d("Record", "Number of Filler words saved"+umCountToSave);
+	  public void saveRecordingData(String recordingName, String time, int fillerWordCount1, int umCount1, int uhCount1, int erCount1, int ahCount1, int likeCount1, int youKnowCount1){
+		    // Get fillerword data
+		        RecordingData recordingData = null;
+		        try
+		        {
+		         File hiddenStorageDir = new File(Environment.getExternalStorageDirectory(), "SpeechTutor/.storage");
+		         if (! hiddenStorageDir.exists()){
+		           if (! hiddenStorageDir.mkdirs()){
+		             Log.d("SpeechTutor", "failed to create directory");
+		           }
+		         }                          
+		         FileInputStream fileIn = new FileInputStream(hiddenStorageDir.getPath() + "/SpeechTutorData.ser");
+		         ObjectInputStream in = new ObjectInputStream(fileIn);
+		           recordingData = (RecordingData) in.readObject();
+		           in.close();
+		           fileIn.close();
+		        }catch(IOException i)
+		        {
+		        //   i.printStackTrace();
+		        }catch(ClassNotFoundException c)
+		        {
+		           c.printStackTrace();
+		        }
+		        //write fillerword data
+		        if (recordingData == null) {
+		         recordingData = new RecordingData();
+		        }
+		        recordingData.recordingFillerWordCount.put(recordingName, fillerWordCount);
+		        recordingData.recordingTime.put(recordingName, time);
+		        recordingData.recordingUmCount.put(recordingName, umCount1);
+		        recordingData.recordingUhCount.put(recordingName, uhCount1);
+		        recordingData.recordingErCount.put(recordingName, erCount1);
+		        recordingData.recordingAhCount.put(recordingName, ahCount1);
+		        recordingData.recordingLikeCount.put(recordingName, likeCount1);
+		        recordingData.recordingYouKnowCount.put(recordingName, youKnowCount1);
+		        
+System.out.println("fillerword: "+recordingData.recordingFillerWordCount+ "umCount"+recordingData.recordingUmCount+"uhCount"
+		+recordingData.recordingUhCount+"er"+
+		recordingData.recordingErCount +"Ah"+recordingData.recordingAhCount);
 
-	}
+		        try
+		        {
+		            File hiddenStorageDir = new File(Environment.getExternalStorageDirectory(), "SpeechTutor/.storage");
+		          if (! hiddenStorageDir.exists()){
+		              if (! hiddenStorageDir.mkdirs()){
+		                  Log.d("SpeechTutor", "failed to create directory");
+		              }
+		          }                 
+		           FileOutputStream fileOut =
+		           new FileOutputStream(hiddenStorageDir.getPath() + "/SpeechTutorData.ser", false);
+		           ObjectOutputStream out = new ObjectOutputStream(fileOut);
+		           out.writeObject(recordingData);
+		           out.close();
+		           fileOut.close();
+		        }catch(IOException i)
+		        {
+		            i.printStackTrace();
+		        }
+		        
+		        Log.d("Record", "Number of Filler words saved"+fillerWordCount);
+		        Log.d("Record", "Number of umCount words saved"+umCount);
+		        Log.d("Record", "Number of uhCount words saved"+uhCount);
+		        Log.d("Record", "Number of erCount words saved"+erCount);
+		        Log.d("Record", "Number of ahCount words saved"+ahCount);
+		        Log.d("Record", "Number of likeCount words saved"+likeCount);
+		        Log.d("Record", "Number of youKnowCount words saved"+youKnowCount);
+
+
+		  }
+	  
+	  private void individualFillerWordUpdate(String text) {
+		    
+		    if (text.toLowerCase().equals("um")) {
+		      umCount++;  
+		    } 
+		  
+		    else if (text.toLowerCase().equals("uh")) {
+		      uhCount++;
+		    }
+		    
+		    else if (text.toLowerCase().equals("er")) {
+		      erCount++;
+		    }
+		    
+		    else if (text.toLowerCase().equals("ah")) {
+		      ahCount++;
+		    }
+		    
+		    else if (text.toLowerCase().equals("like")) {
+		      likeCount++;
+		    }
+		    
+		    else if (text.toLowerCase().equals("youKnow")) {
+		      youKnowCount++;
+		    }
+		  
+		  }
 	
 	@Override
 	public void onBeginningOfSpeech() {
@@ -398,8 +462,9 @@ RecognitionListener,OnSharedPreferenceChangeListener  {
         Log.d(getClass().getSimpleName(), "on partial: " + FILLER_WORDS.get(text));
         if (FILLER_WORDS.containsKey(text) && FILLER_WORDS.get(text)) {
         	Log.d(TAG, "Match: "+text);
-        	umCount++;
-        	umCounterDisplay.setText(" "+(umCount));
+        	fillerWordCount++;
+            individualFillerWordUpdate(text);
+        	umCounterDisplay.setText(" "+(fillerWordCount));
         } else {
         	Log.d(TAG, "Not match: "+text);
         }
