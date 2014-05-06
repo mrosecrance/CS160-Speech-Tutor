@@ -293,7 +293,7 @@ RecognitionListener,OnSharedPreferenceChangeListener  {
 	
          	umCounterDisplay.setText(" "+(fillerWordCount));
          	String time = (String) chronometer.getText();
-            saveRecordingData(whereToSaveFileName,time, fillerWordCount, umCount, uhCount, erCount, ahCount, likeCount, youKnowCount);
+            saveRecordingData(name+".pcm",time, fillerWordCount, umCount, uhCount, erCount, ahCount, likeCount, youKnowCount);
             umCount = 0;
             uhCount = 0;
             erCount = 0;
@@ -301,6 +301,7 @@ RecognitionListener,OnSharedPreferenceChangeListener  {
             likeCount = 0;
             youKnowCount = 0; 
             fillerWordCount=0;
+            umCounterDisplay.setText(" "+(fillerWordCount));
             chronometer.setBase(SystemClock.elapsedRealtime());
             chronometer.start();
             chronometer.stop();

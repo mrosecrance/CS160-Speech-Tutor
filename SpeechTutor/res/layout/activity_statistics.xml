@@ -11,7 +11,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_below="@id/graphSpinner"
-            android:layout_above="@+id/nav_bar"
+            android:layout_above="@+id/individualCheckboxes"
             android:id="@+id/graph"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content" 
@@ -31,6 +31,58 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         layout="@layout/nav_bar" />
+      <LinearLayout 
+          android:id="@id/individualCheckboxes"
+          android:layout_above="@id/nav_bar"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content" 
+          android:paddingLeft="@dimen/activity_horizontal_margin"
+    	  android:paddingRight="@dimen/activity_horizontal_margin"
+    	  android:paddingTop="@dimen/activity_vertical_margin"
+    	  android:orientation="horizontal"
+    	  android:visibility="gone"
+>
+          <CheckBox
+              android:id="@+id/checkbox_um"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:button="@drawable/cb_4"
+              android:checked="true"
+              android:onClick="onCheckboxClicked"
+              android:text="Um" />
+    	  android:gravity="center"
+    	  >
+<CheckBox android:id="@+id/checkbox_uh"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="Uh"
+	        android:button="@drawable/cb_3"
+	        android:checked="true"
+	        android:onClick="onCheckboxClicked"/>
+          <CheckBox android:id="@+id/checkbox_er"
+	        android:layout_width="wrap_content"
+	        android:button="@drawable/cb_1"
+	        android:layout_height="wrap_content"
+	        android:text="Er"
+	        android:checked="true"
+	        android:onClick="onCheckboxClicked"/>
+          <CheckBox android:id="@+id/checkbox_ah"
+	        android:layout_width="wrap_content"
+	        android:button="@drawable/cb_2"
+	        android:layout_height="wrap_content"
+	        android:text="Ah"
+	        android:checked="true"
+	        android:onClick="onCheckboxClicked"/>
+          <CheckBox android:id="@+id/checkbox_like"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="Like"
+	        android:button="@drawable/cb_5"
+	        android:checked="true"
+	        android:onClick="onCheckboxClicked"/>
+
+          
+      </LinearLayout>
 
       <!--<RelativeLayout
           android:layout_width="wrap_content"

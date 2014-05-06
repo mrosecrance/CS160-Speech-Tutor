@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
@@ -34,6 +35,13 @@ public class Statistics extends Activity implements OnItemSelectedListener {
 	private Spinner graphSpinner;
 	private ArrayList<String> FilesInFolder;
 	private RecordingData recordingData;
+	
+	private CheckBox checkbox_um;
+	private CheckBox checkbox_uh;
+	private CheckBox checkbox_ah;
+	private CheckBox checkbox_er;
+	private CheckBox checkbox_like;
+	
 	@Override
     protected void onResume() {
 
@@ -43,7 +51,9 @@ public class Statistics extends Activity implements OnItemSelectedListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_statistics);
+		setContentView(R.layout.activity_statistics);	
+		
+		initializeCheckboxes();
 		
 		graphSpinner = (Spinner) findViewById(R.id.graphSpinner);
 		ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -79,6 +89,21 @@ public class Statistics extends Activity implements OnItemSelectedListener {
        makeTotalFillerWords();
 		
 	}
+	
+	public void initializeCheckboxes(){
+		checkbox_um = (CheckBox) findViewById(R.id.checkbox_um);
+		checkbox_ah = (CheckBox) findViewById(R.id.checkbox_ah);
+		checkbox_er = (CheckBox) findViewById(R.id.checkbox_er);
+		checkbox_uh = (CheckBox) findViewById(R.id.checkbox_uh);
+		checkbox_like = (CheckBox) findViewById(R.id.checkbox_like);
+	}
+	
+	public void onCheckboxClicked(View view) {
+		LinearLayout layout = (LinearLayout) findViewById(R.id.graph);
+		layout.removeView(currentGraph);
+		makeTotalIndividual();
+	}
+	
 	public void makeFillersPerSecond(){
 		 GraphViewData[] data;
 	        String[] recordingNames;
@@ -136,6 +161,125 @@ public class Statistics extends Activity implements OnItemSelectedListener {
 		        
 	        }
 	        makeGraph(data,recordingNames, "Total Number of Filler Words Per Recording", maxValue,true,Color.parseColor("#45ada8"),Color.argb(100,118, 200, 196));
+	}
+	
+	public void makeTotalIndividual(){
+		ArrayList<GraphViewSeries> graphs = new ArrayList<GraphViewSeries>();
+		String[] recordingNames;
+		GraphViewData[] data;
+		int maxValue = 0;
+		
+		if(FilesInFolder.size() == 0){
+			data = new GraphViewData[1];
+	       	recordingNames = new String[1];
+	       	data[0] = new GraphViewData(1,0);
+	       	recordingNames[0] = "";
+	        maxValue = 1;
+	        makeGraph(data,recordingNames, "Individual Filler Words Per Recording", maxValue,true,Color.parseColor("#45ada8"),Color.argb(100,118, 200, 196));
+		}else{
+			recordingNames = new String[(FilesInFolder.size())];
+			for(int i = 0; i < FilesInFolder.size(); i++){
+				recordingNames[i] = FilesInFolder.get(i).substring(0,FilesInFolder.get(i).length()-4);
+				if(recordingNames[i].length() > 2){
+					recordingNames[i] = recordingNames[i].substring(0,2)+"...";
+				}
+			}
+			if(checkbox_um.isChecked()){
+					data = new GraphViewData[FilesInFolder.size()];
+					for(int i = 0; i < FilesInFolder.size(); i++){
+						data[i] = new GraphViewData(i+1, recordingData.recordingUmCount.get(FilesInFolder.get(i)));
+						if(recordingData.recordingUmCount.get(FilesInFolder.get(i)) > maxValue){
+							maxValue = recordingData.recordingUmCount.get(FilesInFolder.get(i));
+						}
+					}
+					graphs.add(new GraphViewSeries("Um",new GraphViewSeriesStyle(Color.parseColor("#d24441"),4), data));
+			}
+			if(checkbox_uh.isChecked()){
+				data = new GraphViewData[FilesInFolder.size()];
+				for(int i = 0; i < FilesInFolder.size(); i++){
+					data[i] = new GraphViewData(i+1, recordingData.recordingUhCount.get(FilesInFolder.get(i)));
+					if(recordingData.recordingUhCount.get(FilesInFolder.get(i)) > maxValue){
+						maxValue = recordingData.recordingUhCount.get(FilesInFolder.get(i));
+					}
+				}
+				graphs.add(new GraphViewSeries("Uh",new GraphViewSeriesStyle(Color.parseColor("#9de0ad"),4), data));
+		}
+			if(checkbox_ah.isChecked()){
+				data = new GraphViewData[FilesInFolder.size()];
+				for(int i = 0; i < FilesInFolder.size(); i++){
+					data[i] = new GraphViewData(i+1, recordingData.recordingAhCount.get(FilesInFolder.get(i)));
+					if(recordingData.recordingAhCount.get(FilesInFolder.get(i)) > maxValue){
+						maxValue = recordingData.recordingAhCount.get(FilesInFolder.get(i));
+					}
+				}
+				graphs.add(new GraphViewSeries("Ah",new GraphViewSeriesStyle(Color.parseColor("#01c9ea"),4), data));
+		}
+			if(checkbox_er.isChecked()){
+				data = new GraphViewData[FilesInFolder.size()];
+				for(int i = 0; i < FilesInFolder.size(); i++){
+					data[i] = new GraphViewData(i+1, recordingData.recordingErCount.get(FilesInFolder.get(i)));
+					if(recordingData.recordingErCount.get(FilesInFolder.get(i)) > maxValue){
+						maxValue = recordingData.recordingErCount.get(FilesInFolder.get(i));
+					}
+				}
+				graphs.add(new GraphViewSeries("Er",new GraphViewSeriesStyle(Color.parseColor("#45ada8"),4), data));
+		}
+			if(checkbox_like.isChecked()){
+				data = new GraphViewData[FilesInFolder.size()];
+				for(int i = 0; i < FilesInFolder.size(); i++){
+					data[i] = new GraphViewData(i+1, recordingData.recordingLikeCount.get(FilesInFolder.get(i)));
+					if(recordingData.recordingLikeCount.get(FilesInFolder.get(i)) > maxValue){
+						maxValue = recordingData.recordingLikeCount.get(FilesInFolder.get(i));
+					}
+				}
+				graphs.add(new GraphViewSeries("Like",new GraphViewSeriesStyle(Color.parseColor("#FFF200"),4), data));
+		}
+		}
+		makeMultipleGraphs(graphs,recordingNames,maxValue);
+	}
+		
+	
+	public void makeMultipleGraphs(ArrayList<GraphViewSeries> graphs, String[] recordingNames, int maxValue){
+			LineGraphView graphView = new LineGraphView(
+			    this
+			    , "Individual Filler Words per Recording"
+			);
+			for(int i=0; i < graphs.size(); i++){
+				graphView.addSeries(graphs.get(i));
+			}
+			graphView.setScalable(true);
+			// optional - legend
+			graphView.setScrollable(true);
+			
+			if(recordingNames.length > 10){
+				graphView.setViewPort(recordingNames.length-10, 10);
+			}
+			
+			
+			graphView.setHorizontalLabels(recordingNames);
+			graphView.setGraphViewStyle(new GraphViewStyle(Color.DKGRAY, Color.DKGRAY, Color.LTGRAY));
+			graphView.getGraphViewStyle().setTextSize(40);
+
+			  int interval;
+			  if (maxValue <= 15) {
+			      interval = 1; // increment of 5 between each label
+			  } else if (maxValue <= 50) {
+			      interval = 5; // increment of 10 between each label
+			  } else {
+			      interval = 10; // increment of 20 between each label
+			  }
+			  // search the top value of your graph, it must be a multiplier of your interval
+			  int maxLabel = maxValue;
+			  while (maxLabel % interval != 0) {
+			      maxLabel++;
+			  }
+			  // set manual bounds
+			  graphView.setManualYAxisBounds(maxLabel, 0);
+			  // indicate number of vertical labels
+			  graphView.getGraphViewStyle().setNumVerticalLabels(maxLabel / interval + 1);
+			LinearLayout layout = (LinearLayout) findViewById(R.id.graph);
+			currentGraph = graphView;
+			layout.addView(graphView);
 	}
 	
 	public void makeGraph(GraphViewData[] data, String[] recordingNames, String title, int maxValue, boolean integerize, int color1, int color2){
@@ -227,11 +371,22 @@ public class Statistics extends Activity implements OnItemSelectedListener {
 			  if(selState.equals("Total Filler Words per Recording")){
 				  LinearLayout layout = (LinearLayout) findViewById(R.id.graph);
 				  layout.removeView(currentGraph);
+				  LinearLayout checkboxes = (LinearLayout) findViewById(R.id.individualCheckboxes);
+				  checkboxes.setVisibility(View.GONE);
 				  makeTotalFillerWords();
+				  
 			  }else if(selState.equals("Filler Words per Second")){
 				  LinearLayout layout = (LinearLayout) findViewById(R.id.graph);
 				  layout.removeView(currentGraph);
+				  LinearLayout checkboxes = (LinearLayout) findViewById(R.id.individualCheckboxes);
+				  checkboxes.setVisibility(View.GONE);
 				  makeFillersPerSecond();
+			  }else if(selState.equals("Individual Filler Words per Recording")){
+				  LinearLayout layout = (LinearLayout) findViewById(R.id.graph);
+				  layout.removeView(currentGraph);
+				  LinearLayout checkboxes = (LinearLayout) findViewById(R.id.individualCheckboxes);
+				  checkboxes.setVisibility(View.VISIBLE);
+				  makeTotalIndividual();
 			  }
 			 }
 

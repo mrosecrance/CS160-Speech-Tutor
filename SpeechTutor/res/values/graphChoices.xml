@@ -3,6 +3,7 @@
     <string-array name="graphs_array">
         <item>Total Filler Words per Recording</item>
         <item>Filler Words per Second</item>
+         <item>Individual Filler Words per Recording</item>
         <item>More coming soon!</item>
     </string-array>
 </resources>
