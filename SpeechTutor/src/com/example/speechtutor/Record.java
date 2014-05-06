@@ -166,7 +166,6 @@ RecognitionListener,OnSharedPreferenceChangeListener  {
 
         			isRecording = true;
         			if(!recordingInProgress) {
-        				System.out.println(chronometer);
         				chronometer.setBase(SystemClock.elapsedRealtime());
         			}else{
         				chronometer.setBase(chronometer.getBase() + SystemClock.elapsedRealtime() - lastPause);
@@ -266,7 +265,6 @@ RecognitionListener,OnSharedPreferenceChangeListener  {
         recognizerButton.setChecked(false);
         recordingInProgress=false;
         final AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        System.out.println("here we are");
         alert.setTitle("Enter Recording Name NOW");
 
         // Set an EditText view to get user input 
@@ -381,10 +379,6 @@ RecognitionListener,OnSharedPreferenceChangeListener  {
 		        recordingData.recordingLikeCount.put(recordingName, likeCount1);
 		        recordingData.recordingYouKnowCount.put(recordingName, youKnowCount1);
 		        
-System.out.println("fillerword: "+recordingData.recordingFillerWordCount+ "umCount"+recordingData.recordingUmCount+"uhCount"
-		+recordingData.recordingUhCount+"er"+
-		recordingData.recordingErCount +"Ah"+recordingData.recordingAhCount);
-
 		        try
 		        {
 		            File hiddenStorageDir = new File(Environment.getExternalStorageDirectory(), "SpeechTutor/.storage");
