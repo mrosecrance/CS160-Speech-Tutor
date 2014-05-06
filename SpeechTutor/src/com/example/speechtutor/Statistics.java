@@ -192,7 +192,7 @@ public class Statistics extends Activity implements OnItemSelectedListener {
 							maxValue = recordingData.recordingUmCount.get(FilesInFolder.get(i));
 						}
 					}
-					graphs.add(new GraphViewSeries("Um",new GraphViewSeriesStyle(Color.parseColor("#d24441"),4), data));
+					graphs.add(new GraphViewSeries("Um",new GraphViewSeriesStyle(Color.argb(96,210,68,65),6), data));
 			}
 			if(checkbox_uh.isChecked()){
 				data = new GraphViewData[FilesInFolder.size()];
@@ -202,7 +202,7 @@ public class Statistics extends Activity implements OnItemSelectedListener {
 						maxValue = recordingData.recordingUhCount.get(FilesInFolder.get(i));
 					}
 				}
-				graphs.add(new GraphViewSeries("Uh",new GraphViewSeriesStyle(Color.parseColor("#9de0ad"),4), data));
+				graphs.add(new GraphViewSeries("Uh",new GraphViewSeriesStyle(Color.argb(96,157,224,173),6), data));
 		}
 			if(checkbox_ah.isChecked()){
 				data = new GraphViewData[FilesInFolder.size()];
@@ -212,7 +212,7 @@ public class Statistics extends Activity implements OnItemSelectedListener {
 						maxValue = recordingData.recordingAhCount.get(FilesInFolder.get(i));
 					}
 				}
-				graphs.add(new GraphViewSeries("Ah",new GraphViewSeriesStyle(Color.parseColor("#01c9ea"),4), data));
+				graphs.add(new GraphViewSeries("Ah",new GraphViewSeriesStyle(Color.argb(96,1,201,234),6), data));
 		}
 			if(checkbox_er.isChecked()){
 				data = new GraphViewData[FilesInFolder.size()];
@@ -222,7 +222,7 @@ public class Statistics extends Activity implements OnItemSelectedListener {
 						maxValue = recordingData.recordingErCount.get(FilesInFolder.get(i));
 					}
 				}
-				graphs.add(new GraphViewSeries("Er",new GraphViewSeriesStyle(Color.parseColor("#45ada8"),4), data));
+				graphs.add(new GraphViewSeries("Er",new GraphViewSeriesStyle(Color.argb(96,69,173,168),6), data));
 		}
 			if(checkbox_like.isChecked()){
 				data = new GraphViewData[FilesInFolder.size()];
@@ -232,7 +232,7 @@ public class Statistics extends Activity implements OnItemSelectedListener {
 						maxValue = recordingData.recordingLikeCount.get(FilesInFolder.get(i));
 					}
 				}
-				graphs.add(new GraphViewSeries("Like",new GraphViewSeriesStyle(Color.parseColor("#FFF200"),4), data));
+				graphs.add(new GraphViewSeries("Like",new GraphViewSeriesStyle(Color.argb(96,255,242,0),6), data));
 		}
 		}
 		makeMultipleGraphs(graphs,recordingNames,maxValue);
