@@ -62,7 +62,7 @@ RecognitionListener,OnSharedPreferenceChangeListener  {
 	RelativeLayout finishRecordingBar = null;
 	TextView umCounterDisplay;
     private String TAG = "record";
-    
+    private long lastPause;
     
     
 	private File appDir;
@@ -163,6 +163,8 @@ RecognitionListener,OnSharedPreferenceChangeListener  {
         			if(!recordingInProgress) {
         				System.out.println(chronometer);
         				chronometer.setBase(SystemClock.elapsedRealtime());
+        			}else{
+        				chronometer.setBase(chronometer.getBase() + SystemClock.elapsedRealtime() - lastPause);
         			}
                     Log.d(TAG,"after settingBase ");
 
@@ -176,6 +178,8 @@ RecognitionListener,OnSharedPreferenceChangeListener  {
 
         			if (null != recognizer) {
         				isRecording = false;
+        				chronometer.stop();
+        				lastPause = SystemClock.elapsedRealtime();
         				chronometer.stop();
         				recognizer.stop();
         			}
