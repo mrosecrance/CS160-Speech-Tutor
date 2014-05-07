@@ -30,8 +30,6 @@ public class SpeechRecognizerRecorder {
 
     protected static final String TAG = SpeechRecognizerRecorder.class.getSimpleName();
 
-    private static final int BUFFER_SIZE = 1024;
-
     private final Config config;
     private final Decoder decoder;
 
@@ -197,19 +195,20 @@ public class SpeechRecognizerRecorder {
 
     private final class RecognizerThread extends Thread {
         @Override public void run() {
+        	int minBufferSize = AudioRecord.getMinBufferSize(sampleRate, AudioFormat.CHANNEL_IN_MONO, AudioFormat.ENCODING_PCM_16BIT);
             AudioRecord recorder =
                 new AudioRecord(AudioSource.VOICE_RECOGNITION,
                                 sampleRate,
                                 AudioFormat.CHANNEL_IN_MONO,
                                 AudioFormat.ENCODING_PCM_16BIT,
-                                8192); // TODO:calculate properly
+                                minBufferSize);
             decoder.startUtt(null);
             recorder.startRecording();
-            short[] buffer = new short[BUFFER_SIZE];
+            short[] buffer = new short[minBufferSize/2];
             boolean vadState = decoder.getVadState();
 
             while (!interrupted()) {
-                int nread = recorder.read(buffer, 0, buffer.length);
+                int nread = recorder.read(buffer, 0, minBufferSize/2);
 
                 if (-1 == nread) {
                     throw new RuntimeException("error reading audio buffer");

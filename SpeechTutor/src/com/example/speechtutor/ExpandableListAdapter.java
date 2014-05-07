@@ -222,11 +222,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
          	                } catch (IOException e) {
          	                        //nothing
          	                }
-         				 int intSize = android.media.AudioTrack.getMinBufferSize(44100, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT);
+         	             int sampleRate = 16000;
+         				 int intSize = android.media.AudioTrack.getMinBufferSize(sampleRate, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT);
 
-                         AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, 44100, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT, intSize, AudioTrack.MODE_STREAM);
+                         AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC, sampleRate, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT, intSize, AudioTrack.MODE_STREAM);
                          playing = audioTrack;
-                         playing.setPlaybackRate(16000);
 		                 playing.play();
 		                 playing.write(music, 0, musicLength);
 		                 System.out.println(position);
