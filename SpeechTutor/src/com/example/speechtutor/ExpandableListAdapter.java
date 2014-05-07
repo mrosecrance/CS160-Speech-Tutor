@@ -285,7 +285,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         	File hiddenStorageDir = new File(Environment.getExternalStorageDirectory(), "SpeechTutor/.storage");
 	        if (! hiddenStorageDir.exists()){
 	            if (! hiddenStorageDir.mkdirs()){
-	                Log.d("SpeechTutor", "failed to create directory");
 	            }
 	        }
            FileInputStream fileIn = new FileInputStream(hiddenStorageDir.getPath() + "/SpeechTutorData.ser");

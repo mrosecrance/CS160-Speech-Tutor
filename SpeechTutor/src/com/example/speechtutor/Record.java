@@ -99,14 +99,12 @@ RecognitionListener,OnSharedPreferenceChangeListener  {
         FILLER_WORDS.put("like", sharedPrefs.getBoolean("detectLike", false));
 
 		try {
-			Log.d(TAG,"before trying to sync assets");
 			appDir = syncAssets(getApplicationContext());
 		} catch (IOException e) {
 			throw new RuntimeException("failed to synchronize assets", e);
 		}
 		
 
-		Log.d(TAG,"before recognizer instantiaiton");
 		recognizer = SpeechRecognizerRecorderSetup.defaultSetup()
                 .setAcousticModel(new File(appDir, "models/hmm/en-us-semi"))
                 .setDictionary(new File(appDir, "models/lm/cmu07a.dic"))
@@ -115,7 +113,6 @@ RecognitionListener,OnSharedPreferenceChangeListener  {
                 .setAudioStorageDirectory("SpeechTutor")
                 .getRecognizer();
         
-		Log.d(TAG,"after recognizer instantiaiton");
 		
 		filePath = recognizer.getAudioStorageFilePath();
 
@@ -133,44 +130,36 @@ RecognitionListener,OnSharedPreferenceChangeListener  {
         //recognizer.addNgramSearch(FORECAST_SEARCH, languageModel);
 
 
-        Log.d(TAG,"addlistener this");
 
         navBar = (LinearLayout) findViewById(R.id.nav_bar);
         finishRecordingBar = (RelativeLayout) findViewById(R.id.finish_recording_bar);
         
-        Log.d(TAG,"before contentview set");
 
         chronometer = (Chronometer) findViewById(R.id.chronometer);
 
         umCounterDisplay = (TextView) findViewById(R.id.fillerword_counter);
         
-        Log.d(TAG,"after contentview set");
-        
-        Log.d(TAG,"before recognizer button is created");
-
         //Set up Record Button
         recognizerButton = (ToggleButton) findViewById(R.id.record);
         recognizerButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
         	@Override
         	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                Log.d(TAG,"before if isChecked");
-
+                
         		if(isChecked){ //record
         			if(recordingInProgress == false) {
         				recognizer.setAudioStorageFile();
         				filePath = recognizer.getAudioStorageFilePath();
         			}
-                    Log.d(TAG,"inside if isChecked");
+                    
                     switchSearch(KWS_SEARCH_NAME);
-                    Log.d(TAG,"startListening for ums");
-
+               
         			isRecording = true;
         			if(!recordingInProgress) {
         				chronometer.setBase(SystemClock.elapsedRealtime());
         			}else{
         				chronometer.setBase(chronometer.getBase() + SystemClock.elapsedRealtime() - lastPause);
         			}
-                    Log.d(TAG,"after settingBase ");
+                  
 
         			recordingInProgress=true;
         			navBar.setVisibility(View.GONE);
@@ -178,7 +167,7 @@ RecognitionListener,OnSharedPreferenceChangeListener  {
         			chronometer.start();
 
         		}else{ //stop
-                    Log.d(TAG,"Not isChecked");
+                   
 
         			if (null != recognizer) {
         				isRecording = false;
@@ -188,10 +177,10 @@ RecognitionListener,OnSharedPreferenceChangeListener  {
         				recognizer.stop();
         			}
         		}
-                Log.d(TAG,"completed onChecked Changed");
+               
         	}
         });
-        Log.d(TAG,"after recognizer button is created");
+        
 	}
 
 	@Override
@@ -251,14 +240,11 @@ RecognitionListener,OnSharedPreferenceChangeListener  {
         chronometer.stop();
         //filePath isn't being created in this class... add a public method to SpeechRecognizerRecorder
         File recording = new File(filePath);
-        Log.w(TAG, "Trying to delete recording");
         recording.delete();
-        Log.d("Record", "Deleted recording exists: "+recording.exists());
 	}
 
 	public void saveRecording(View view) {
 //		saveAudioDataToFile();
-        Log.d("Record", "SaveRecording method reached: ");
 
         navBar.setVisibility(View.VISIBLE);
         finishRecordingBar.setVisibility(View.GONE);
@@ -352,7 +338,6 @@ RecognitionListener,OnSharedPreferenceChangeListener  {
 		         File hiddenStorageDir = new File(Environment.getExternalStorageDirectory(), "SpeechTutor/.storage");
 		         if (! hiddenStorageDir.exists()){
 		           if (! hiddenStorageDir.mkdirs()){
-		             Log.d("SpeechTutor", "failed to create directory");
 		           }
 		         }                          
 		         FileInputStream fileIn = new FileInputStream(hiddenStorageDir.getPath() + "/SpeechTutorData.ser");
@@ -385,7 +370,6 @@ RecognitionListener,OnSharedPreferenceChangeListener  {
 		            File hiddenStorageDir = new File(Environment.getExternalStorageDirectory(), "SpeechTutor/.storage");
 		          if (! hiddenStorageDir.exists()){
 		              if (! hiddenStorageDir.mkdirs()){
-		                  Log.d("SpeechTutor", "failed to create directory");
 		              }
 		          }                 
 		           FileOutputStream fileOut =
@@ -399,13 +383,7 @@ RecognitionListener,OnSharedPreferenceChangeListener  {
 		            i.printStackTrace();
 		        }
 		        
-		        Log.d("Record", "Number of Filler words saved"+fillerWordCount);
-		        Log.d("Record", "Number of umCount words saved"+umCount);
-		        Log.d("Record", "Number of uhCount words saved"+uhCount);
-		        Log.d("Record", "Number of erCount words saved"+erCount);
-		        Log.d("Record", "Number of ahCount words saved"+ahCount);
-		        Log.d("Record", "Number of likeCount words saved"+likeCount);
-		        Log.d("Record", "Number of youKnowCount words saved"+youKnowCount);
+		        
 
 
 		  }
@@ -453,15 +431,12 @@ RecognitionListener,OnSharedPreferenceChangeListener  {
 		// TODO Auto-generated method stub
 		String[] splitText = hypothesis.getHypstr().split(" ");
 		String text = splitText[splitText.length-1];
-        Log.d(getClass().getSimpleName(), "on partial: " + text);
-        Log.d(getClass().getSimpleName(), "on partial: " + FILLER_WORDS.get(text));
+        
         if (FILLER_WORDS.containsKey(text) && FILLER_WORDS.get(text)) {
-        	Log.d(TAG, "Match: "+text);
         	fillerWordCount++;
             individualFillerWordUpdate(text);
         	umCounterDisplay.setText(" "+(fillerWordCount));
         } else {
-        	Log.d(TAG, "Not match: "+text);
         }
         switchSearch(KWS_SEARCH_NAME);
 	}

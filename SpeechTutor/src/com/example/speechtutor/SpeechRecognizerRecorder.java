@@ -56,11 +56,9 @@ public class SpeechRecognizerRecorder {
     	audioStorageDirectory = new File(Environment.getExternalStorageDirectory(), outputDirectoryName);
     	if (! audioStorageDirectory.exists()){
             if (! audioStorageDirectory.mkdirs()){
-                Log.d("SpeechTutor", "failed to create directory");
                 return;
             }
             else{
-            	Log.i("SpeechTutor", "created speech directory");
             }
         }
     }
@@ -95,7 +93,6 @@ public class SpeechRecognizerRecorder {
         	setAudioStorageFile();
         }
     	
-        Log.i(TAG, format("Start recognition \"%s\"", searchName));
         decoder.setSearch(searchName);
         recognizerThread = new RecognizerThread();
         recognizerThread.start();
@@ -127,7 +124,6 @@ public class SpeechRecognizerRecorder {
     public boolean stop() {
         boolean result = stopRecognizerThread();
         if (result)
-            Log.i(TAG, "Stop recognition");
 
         return result;
     }
@@ -141,7 +137,6 @@ public class SpeechRecognizerRecorder {
     public boolean cancel() {
         boolean result = stopRecognizerThread();
         if (result) {
-            Log.i(TAG, "Cancel recognition");
             mainHandler.removeCallbacksAndMessages(null);
         }
 
@@ -168,7 +163,6 @@ public class SpeechRecognizerRecorder {
      * @param file JSGF file
      */
     public void addGrammarSearch(String name, File file) {
-        Log.i(TAG, format("Load JSGF %s", file));
         decoder.setJsgfFile(name, file.getPath());
     }
 
@@ -179,7 +173,6 @@ public class SpeechRecognizerRecorder {
      * @param file N-gram model file
      */
     public void addNgramSearch(String name, File file) {
-        Log.i(TAG, format("Load N-gram model %s", file));
         decoder.setLmFile(name, file.getPath());
     }
 
@@ -229,7 +222,6 @@ public class SpeechRecognizerRecorder {
                         // // writes the data to file from buffer
                         // // stores the voice buffer
                         audioOutputStream.write(bufferData, 0, bufferData.length);
-                        Log.d("Record", "Audio data actually saved");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -316,7 +308,6 @@ public class SpeechRecognizerRecorder {
             try {
                 audioOutputStream.close();
             } catch (IOException e){
-                Log.d(TAG, "Could not close audioOutputStream");
             }
         }
 
