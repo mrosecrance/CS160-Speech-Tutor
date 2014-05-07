@@ -124,8 +124,8 @@ public class SpeechRecognizerRecorder {
     public boolean stop() {
         boolean result = stopRecognizerThread();
         if (result)
-
         return result;
+		return false;
     }
 
     /**
