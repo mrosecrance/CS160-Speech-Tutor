@@ -245,7 +245,7 @@ RecognitionListener,OnSharedPreferenceChangeListener  {
         recognizerButton.setChecked(false);
         recordingInProgress=false;
         fillerWordCount=0;
-    	umCounterDisplay.setText(" "+(fillerWordCount));
+    	umCounterDisplay.setText(""+(fillerWordCount));
         chronometer.setBase(SystemClock.elapsedRealtime());
         chronometer.start();
         chronometer.stop();
@@ -265,7 +265,7 @@ RecognitionListener,OnSharedPreferenceChangeListener  {
         recognizerButton.setChecked(false);
         recordingInProgress=false;
         final AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("Enter Recording Name NOW");
+        alert.setTitle("Enter Recording Name:");
 
         // Set an EditText view to get user input 
         final EditText input = new EditText(this);

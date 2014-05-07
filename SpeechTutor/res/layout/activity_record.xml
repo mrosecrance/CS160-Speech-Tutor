@@ -64,14 +64,16 @@
         android:layout_centerHorizontal="true"
         android:textSize="100sp" />
 
-    <TextView
-        android:id="@+id/fillerword_counter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/record"
-        android:text="0"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="70sp" />
+ 
+
+     <TextView
+         android:id="@+id/fillerword_counter"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_below="@+id/record"
+         android:layout_centerHorizontal="true"
+         android:text="0"
+         android:textAppearance="?android:attr/textAppearanceLarge"
+         android:textSize="70sp" />
 
 </RelativeLayout>
