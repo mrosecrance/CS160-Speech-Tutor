@@ -11,7 +11,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_below="@id/graphSpinner"
-            android:layout_above="@+id/individualCheckboxes"
+            android:layout_above="@+id/recordingLabel"
             android:id="@+id/graph"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content" 
@@ -19,6 +19,27 @@
     	  android:paddingRight="@dimen/activity_horizontal_margin"
     	  android:paddingTop="@dimen/activity_vertical_margin">
         </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_below="@id/graphSpinner"
+            android:layout_above="@+id/recordingLabel"
+            android:id="@+id/graph"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content" 
+          android:paddingLeft="@dimen/activity_horizontal_margin"
+    	  android:paddingRight="@dimen/activity_horizontal_margin"
+    	  android:paddingTop="@dimen/activity_vertical_margin">
+        </LinearLayout>
+          <TextView
+              android:paddingBottom="5sp"
+              android:id="@id/recordingLabel"
+              android:gravity="center_horizontal"
+              android:layout_above="@+id/individualCheckboxes"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:text="Recording"
+              android:textSize="24sp"
+              />
        <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
@@ -43,6 +64,7 @@
     	  android:visibility="gone"
     	 
 >
+
           <CheckBox
               android:id="@+id/checkbox_um"
               android:layout_width="wrap_content"
@@ -84,6 +106,7 @@
 
           
       </LinearLayout>
+      
 
       <!--<RelativeLayout
           android:layout_width="wrap_content"

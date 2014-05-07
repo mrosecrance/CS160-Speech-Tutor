@@ -124,16 +124,18 @@ public class Statistics extends Activity implements OnItemSelectedListener {
 					float num = minutes*60+seconds; 
 					data[i] = new GraphViewData(i+1, recordingData.recordingFillerWordCount.get(FilesInFolder.get(i))/num);
 					recordingNames[i] = FilesInFolder.get(i).substring(0,FilesInFolder.get(i).length()-4);
-					if(recordingNames[i].length() > 2){
-						recordingNames[i] = recordingNames[i].substring(0,2)+"...";
-					}
+					recordingNames[i] = "";
+					//if(recordingNames[i].length() > 2){
+					//	recordingNames[i] = recordingNames[i].substring(0,2)+"...";
+						//recordingNames[i] = "";
+					//}
 					if(recordingData.recordingFillerWordCount.get(FilesInFolder.get(i)) > maxValue){
 						maxValue = recordingData.recordingFillerWordCount.get(FilesInFolder.get(i));
 					}
 				}
 		        
 	        }
-	        makeGraph(data,recordingNames, "Filler Words Per Second", maxValue,false,Color.parseColor("#63ce7c"),Color.argb(100,157, 224, 173));
+	        makeGraph(data,recordingNames, "", maxValue,false,Color.parseColor("#63ce7c"),Color.argb(100,157, 224, 173));
 	}
 	public void makeTotalFillerWords(){
 		 GraphViewData[] data;
@@ -150,17 +152,18 @@ public class Statistics extends Activity implements OnItemSelectedListener {
 				recordingNames = new String[(FilesInFolder.size())];
 				for(int i = 0; i < FilesInFolder.size(); i++){
 					data[i] = new GraphViewData(i+1, recordingData.recordingFillerWordCount.get(FilesInFolder.get(i)));
-					recordingNames[i] = FilesInFolder.get(i).substring(0,FilesInFolder.get(i).length()-4);
-					if(recordingNames[i].length() > 2){
-						recordingNames[i] = recordingNames[i].substring(0,2)+"...";
-					}
+					//recordingNames[i] = FilesInFolder.get(i).substring(0,FilesInFolder.get(i).length()-4);
+					//if(recordingNames[i].length() > 2){
+					//	recordingNames[i] = recordingNames[i].substring(0,2)+"...";
+					//}
+					recordingNames[i] = "";
 					if(recordingData.recordingFillerWordCount.get(FilesInFolder.get(i)) > maxValue){
 						maxValue = recordingData.recordingFillerWordCount.get(FilesInFolder.get(i));
 					}
 				}
 		        
 	        }
-	        makeGraph(data,recordingNames, "Total Number of Filler Words Per Recording", maxValue,true,Color.parseColor("#45ada8"),Color.argb(100,118, 200, 196));
+	        makeGraph(data,recordingNames, "", maxValue,true,Color.parseColor("#45ada8"),Color.argb(100,118, 200, 196));
 	}
 	
 	public void makeTotalIndividual(){
@@ -175,14 +178,16 @@ public class Statistics extends Activity implements OnItemSelectedListener {
 	       	data[0] = new GraphViewData(1,0);
 	       	recordingNames[0] = "";
 	        maxValue = 1;
-	        makeGraph(data,recordingNames, "Individual Filler Words Per Recording", maxValue,true,Color.parseColor("#45ada8"),Color.argb(100,118, 200, 196));
+	        makeGraph(data,recordingNames, "", maxValue,true,Color.parseColor("#45ada8"),Color.argb(100,118, 200, 196));
 		}else{
 			recordingNames = new String[(FilesInFolder.size())];
 			for(int i = 0; i < FilesInFolder.size(); i++){
 				recordingNames[i] = FilesInFolder.get(i).substring(0,FilesInFolder.get(i).length()-4);
-				if(recordingNames[i].length() > 2){
-					recordingNames[i] = recordingNames[i].substring(0,2)+"...";
-				}
+				//if(recordingNames[i].length() > 2){
+					//recordingNames[i] = recordingNames[i].substring(0,2)+"...";
+				//	recordingNames[i] = "";
+				//}
+				recordingNames[i] = "";
 			}
 			if(checkbox_um.isChecked()){
 					data = new GraphViewData[FilesInFolder.size()];
@@ -242,7 +247,7 @@ public class Statistics extends Activity implements OnItemSelectedListener {
 	public void makeMultipleGraphs(ArrayList<GraphViewSeries> graphs, String[] recordingNames, int maxValue){
 			LineGraphView graphView = new LineGraphView(
 			    this
-			    , "Individual Filler Words per Recording"
+			    , ""
 			);
 			for(int i=0; i < graphs.size(); i++){
 				graphView.addSeries(graphs.get(i));
@@ -300,9 +305,7 @@ public class Statistics extends Activity implements OnItemSelectedListener {
 		
 		((LineGraphView) graphView).setDrawBackground(true);
 		((LineGraphView) graphView).setBackgroundColor(color2);
-		graphView.setHorizontalLabels(recordingNames);
 		graphView.setGraphViewStyle(new GraphViewStyle(Color.DKGRAY, Color.DKGRAY, Color.LTGRAY));
-		graphView.getGraphViewStyle().setNumHorizontalLabels(4);
 
 		graphView.getGraphViewStyle().setTextSize(40);
 		if(integerize){
@@ -326,6 +329,7 @@ public class Statistics extends Activity implements OnItemSelectedListener {
 				  graphView.getGraphViewStyle().setNumVerticalLabels(maxLabel / interval + 1);
 		}
 		graphView.getGraphViewStyle().setVerticalLabelsWidth(100);
+		graphView.setHorizontalLabels(recordingNames);
 		LinearLayout layout = (LinearLayout) findViewById(R.id.graph);
 		currentGraph = graphView;
 		layout.addView(graphView);
