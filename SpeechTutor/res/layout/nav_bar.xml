@@ -15,7 +15,7 @@
         android:onClick="navigate"
         android:text="@string/nav_statistics"
         android:background="#d24441"
-        android:src="@drawable/stats5"/> 
+        android:src="@drawable/stats"/> 
 
     <ImageButton 
         android:id="@+id/nav_record"
@@ -26,7 +26,7 @@
         android:onClick="navigate"
         android:text="@string/nav_record" 
         android:background="#9de0ad"
-        android:src="@drawable/rec5"
+        android:src="@drawable/record"
         />
 
 
@@ -39,7 +39,7 @@
         android:onClick="navigate"
         android:text="@string/nav_playback"
         android:background="#01c9ea"
-        android:src="@drawable/playback5"
+        android:src="@drawable/playback"
          />
 
     <ImageButton 
@@ -51,7 +51,7 @@
         android:onClick="navigate"
         android:text="@string/nav_settings"
         android:background="#45ada8"
-        android:src="@drawable/settings5"
+        android:src="@drawable/settings"
          />
     
 </LinearLayout>
