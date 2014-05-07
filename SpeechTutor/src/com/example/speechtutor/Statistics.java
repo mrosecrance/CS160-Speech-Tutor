@@ -139,7 +139,7 @@ public class Statistics extends Activity implements OnItemSelectedListener {
 		 GraphViewData[] data;
 	        String[] recordingNames;
 	        int maxValue = 0 ;
-	        if(FilesInFolder.size() == 0){
+	        if(FilesInFolder != null && FilesInFolder.size() == 0){
 	        	 data = new GraphViewData[1];
 	        	 recordingNames = new String[1];
 	        	data[0] = new GraphViewData(1,0);
