@@ -21,13 +21,13 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.SystemClock;
-import android.preference.ListPreference;
-import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -464,6 +464,15 @@ RecognitionListener,OnSharedPreferenceChangeListener  {
         	Log.d(TAG, "Not match: "+text);
         }
         switchSearch(KWS_SEARCH_NAME);
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event)  {
+	    if(isRecording && keyCode == KeyEvent.KEYCODE_BACK){
+		    Button save = (Button) findViewById(R.id.save_recording);
+		    saveRecording(save);
+	    }
+	    return super.onKeyDown(keyCode, event);
 	}
 	
     private void switchSearch(String searchName) {

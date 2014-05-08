@@ -22,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GraphView.GraphViewData;
@@ -63,6 +64,18 @@ public class Statistics extends Activity implements OnItemSelectedListener {
 		graphSpinner.setOnItemSelectedListener((OnItemSelectedListener) this);
 		
 		FilesInFolder = GetFiles(Environment.getExternalStorageDirectory()+"/SpeechTutor");
+		
+		LinearLayout layout = (LinearLayout) findViewById(R.id.graph);
+		TextView recordingLabel = (TextView) findViewById(R.id.recordingLabel);
+		if(FilesInFolder == null || FilesInFolder.size() < 2){
+			layout.setVisibility(View.GONE);
+			TextView no_recordings = (TextView) findViewById(R.id.need_recordings);
+			no_recordings.setVisibility(View.VISIBLE);
+			recordingLabel.setVisibility(View.GONE);
+		}else{
+			layout.setVisibility(View.VISIBLE);
+			recordingLabel.setVisibility(View.VISIBLE);
+		}
 		
 		recordingData = null;
         try
@@ -369,7 +382,11 @@ public class Statistics extends Activity implements OnItemSelectedListener {
 	
 	public void onItemSelected(AdapterView<?> parent, View view, int position,
 			   long id) {
+			  
 			  graphSpinner.setSelection(position);
+			  if(FilesInFolder == null || FilesInFolder.size() < 2){
+				  return;
+			  }
 			  String selState = (String) graphSpinner.getSelectedItem();
 			  System.out.println(selState);
 			  if(selState.equals("Total Filler Words per Recording")){

@@ -7,7 +7,19 @@
     <Spinner
     android:id="@+id/graphSpinner"
     android:layout_width="fill_parent"
+    android:textSize="24sp"
     android:layout_height="wrap_content" />
+    <TextView
+              android:paddingBottom="5sp"
+              android:id="@+id/need_recordings"
+              android:gravity="center_horizontal"
+              android:layout_below="@id/graphSpinner"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:text="You need 2+ recordings to compute statistics."
+              android:textSize="20sp"
+              android:visibility="gone"
+              />
         <LinearLayout
             android:orientation="horizontal"
             android:layout_below="@id/graphSpinner"
@@ -38,7 +50,7 @@
               android:layout_width="fill_parent"
               android:layout_height="wrap_content"
               android:text="Recording"
-              android:textSize="24sp"
+              android:textSize="20sp"
               />
        <View
         android:layout_width="match_parent"
@@ -55,7 +67,8 @@
       <LinearLayout 
           android:id="@id/individualCheckboxes"
           android:layout_above="@id/nav_bar"
-          android:layout_width="wrap_content"
+          android:layout_width="fill_parent"
+          android:gravity="center_horizontal"
           android:layout_height="wrap_content" 
           android:paddingLeft="@dimen/activity_horizontal_margin"
     	  android:paddingRight="@dimen/activity_horizontal_margin"
@@ -72,7 +85,8 @@
               android:button="@drawable/cb_4"
               android:checked="true"
               android:onClick="onCheckboxClicked"
-              android:text="Um" />
+              android:text="Um"
+              android:textSize="20sp" />
     	 
     	  >
 <CheckBox android:id="@+id/checkbox_uh"
@@ -81,13 +95,15 @@
 	        android:text="Uh"
 	        android:button="@drawable/cb_3"
 	        android:checked="true"
-	        android:onClick="onCheckboxClicked"/>
+	        android:onClick="onCheckboxClicked"
+	        android:textSize="20sp"/>
           <CheckBox android:id="@+id/checkbox_er"
 	        android:layout_width="wrap_content"
 	        android:button="@drawable/cb_1"
 	        android:layout_height="wrap_content"
 	        android:text="Er"
 	        android:checked="true"
+	        android:textSize="20sp"
 	        android:onClick="onCheckboxClicked"/>
           <CheckBox android:id="@+id/checkbox_ah"
 	        android:layout_width="wrap_content"
@@ -95,11 +111,13 @@
 	        android:layout_height="wrap_content"
 	        android:text="Ah"
 	        android:checked="true"
+	        android:textSize="20sp"
 	        android:onClick="onCheckboxClicked"/>
           <CheckBox android:id="@+id/checkbox_like"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:text="Like"
+	        android:textSize="20sp"
 	        android:button="@drawable/cb_5"
 	        android:checked="true"
 	        android:onClick="onCheckboxClicked"/>
